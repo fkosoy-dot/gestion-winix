@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winix — Caja & Finanzas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #E8511A;
+    --orange-light: #FBE9E2;
+    --orange-dark: #B83D11;
+    --navy: #1B3A6B;
+    --navy-light: #E8EDF5;
+    --navy-dark: #0F2240;
+    --green: #1A8A5A;
+    --green-light: #E2F4EC;
+    --red: #C0392B;
+    --red-light: #FAEAEA;
+    --gray-100: #F5F4F1;
+    --gray-200: #E8E6DF;
+    --gray-400: #9B9890;
+    --gray-700: #3A3935;
+    --gray-900: #1A1918;
+    --bg: #F9F8F5;
+    --surface: #FFFFFF;
+    --border: #E2E0D8;
+    --text: #1A1918;
+    --text-muted: #6B6960;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--navy-dark);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+  }
+
+  .logo-wrap {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo-main {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFF;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+
+  .logo-accent { color: var(--orange); }
+
+  nav { flex: 1; padding: 16px 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+  .nav-item.active {
+    color: #fff;
+    border-left-color: var(--orange);
+    background: rgba(232,81,26,0.12);
+  }
+
+  .nav-icon { width: 16px; height: 16px; opacity: 0.7; }
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  .nav-section-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding: 16px 20px 6px;
+    font-family: var(--mono);
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .config-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 6px 0;
+  }
+
+  .config-btn:hover { color: rgba(255,255,255,0.7); }
+
+  /* MAIN */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-title { font-size: 18px; font-weight: 700; color: var(--navy-dark); }
+  .page-subtitle { font-size: 12px; color: var(--text-muted); font-family: var(--mono); margin-top: 2px; }
+
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-primary { background: var(--orange); color: #fff; }
+  .btn-primary:hover { background: var(--orange-dark); }
+  .btn-secondary { background: var(--navy-light); color: var(--navy-dark); }
+  .btn-secondary:hover { background: var(--gray-200); }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+  .btn-ghost:hover { border-color: var(--gray-400); color: var(--text); }
+  .btn-danger { background: var(--red-light); color: var(--red); border: 1px solid var(--red); }
+  .btn-danger:hover { background: var(--red); color: #fff; }
+
+  .content { padding: 28px 32px; flex: 1; }
+
+  /* METRIC CARDS */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .metric-value {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  .metric-delta {
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .positive { color: var(--green); }
+  .negative { color: var(--red); }
+  .neutral { color: var(--text-muted); }
+
+  .metric-card.accent-orange { border-left: 3px solid var(--orange); }
+  .metric-card.accent-green { border-left: 3px solid var(--green); }
+  .metric-card.accent-red { border-left: 3px solid var(--red); }
+  .metric-card.accent-navy { border-left: 3px solid var(--navy); }
+
+  /* PANELS */
+  .panels-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title { font-size: 13px; font-weight: 600; color: var(--navy-dark); }
+  .panel-action { font-size: 12px; color: var(--orange); cursor: pointer; font-family: var(--mono); }
+  .panel-action:hover { color: var(--orange-dark); }
+
+  .panel-body { padding: 16px 20px; }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; }
+
+  .data-table th {
+    font-size: 10px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    text-align: left;
+    background: var(--gray-100);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--gray-100); }
+
+  .amount-positive { font-family: var(--mono); color: var(--green); font-size: 13px; font-weight: 500; }
+  .amount-negative { font-family: var(--mono); color: var(--red); font-size: 13px; font-weight: 500; }
+  .amount-neutral { font-family: var(--mono); color: var(--navy); font-size: 13px; font-weight: 500; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 500;
+  }
+
+  .badge-ingreso { background: var(--green-light); color: var(--green); }
+  .badge-egreso { background: var(--red-light); color: var(--red); }
+  .badge-pendiente { background: var(--orange-light); color: var(--orange-dark); }
+  .badge-pagado { background: var(--green-light); color: var(--green); }
+  .badge-dev { background: var(--navy-light); color: var(--navy); }
+  .badge-winix20 { background: var(--orange-light); color: var(--orange-dark); }
+  .badge-build { background: #EEF0FF; color: #3A3FA0; }
+  .badge-recurrente { background: #E8F4FF; color: #1A5A9B; }
+  .badge-activo { background: var(--green-light); color: var(--green); }
+  .badge-inactivo { background: var(--gray-100); color: var(--gray-400); }
+
+  /* FULL PANEL */
+  .panel-full {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  /* CHART CONTAINER */
+  .chart-wrap { padding: 20px; position: relative; height: 240px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,34,64,0.6);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 12px;
+    width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(15,34,64,0.25);
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--navy-dark); }
+  .modal-close { font-size: 20px; color: var(--text-muted); cursor: pointer; line-height: 1; }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-body { padding: 20px 24px; }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* FORM */
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.15s;
+  }
+
+  .form-control:focus { outline: none; border-color: var(--orange); }
+  select.form-control { cursor: pointer; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-family: var(--mono); }
+
+  .type-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .type-toggle label {
+    padding: 9px 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-muted);
+    background: var(--bg);
+  }
+
+  .type-toggle input[type="radio"] { display: none; }
+
+  .type-toggle input[type="radio"]:checked + label.ingreso-label {
+    background: var(--green-light);
+    color: var(--green);
+  }
+
+  .type-toggle input[type="radio"]:checked + label.egreso-label {
+    background: var(--red-light);
+    color: var(--red);
+  }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* CONFIG */
+  .config-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+
+  .config-section-title { font-size: 13px; font-weight: 600; color: var(--navy-dark); margin-bottom: 4px; }
+  .config-section-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; font-family: var(--mono); }
+
+  .alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    font-family: var(--mono);
+  }
+
+  .alert-warning { background: #FFF8E1; color: #7A5800; border: 1px solid #FFE082; }
+  .alert-success { background: var(--green-light); color: var(--green); border: 1px solid #A5D6A7; }
+  .alert-error { background: var(--red-light); color: var(--red); border: 1px solid #EF9A9A; }
+  .alert-info { background: var(--navy-light); color: var(--navy); border: 1px solid #90CAF9; }
+
+  .connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-family: var(--mono);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-400);
+  }
+
+  .status-dot.connected { background: var(--green); }
+  .status-dot.error { background: var(--red); }
+  .status-dot.loading { background: var(--orange); animation: pulse 1s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* PNL TABLE */
+  .pnl-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pnl-table th {
+    padding: 8px 16px;
+    background: var(--navy-dark);
+    color: rgba(255,255,255,0.8);
+    font-size: 10px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: right;
+  }
+  .pnl-table th:first-child { text-align: left; }
+  .pnl-table td {
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    text-align: right;
+  }
+  .pnl-table td:first-child { text-align: left; font-family: var(--sans); font-size: 13px; }
+  .pnl-table tr.section-header td {
+    background: var(--gray-100);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+  }
+  .pnl-table tr.total-row td {
+    background: var(--navy-light);
+    font-weight: 700;
+    color: var(--navy-dark);
+    border-top: 2px solid var(--navy);
+  }
+  .pnl-table tr.net-row td {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .empty-state-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+
+  /* FILTERS */
+  .filters-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .filter-select {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--text);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .filter-select:focus { outline: none; border-color: var(--orange); }
+
+  .month-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-dark);
+  }
+
+  .month-btn {
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .month-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  .tag { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+
+  .action-bar { display: flex; gap: 8px; }
+  .icon-btn {
+    padding: 4px 8px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .icon-btn:hover { border-color: var(--red); color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo-main">Winix<span class="logo-accent">.</span></div>
+      <div class="logo-sub">Admin Financiero</div>
+    </div>
+    <nav>
+      <div class="nav-section-label">Dashboard</div>
+      <div class="nav-item active" onclick="showPage('dashboard')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+        Resumen
+      </div>
+      <div class="nav-item" onclick="showPage('caja')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v1H2V4zm0 3h12v5a1 1 0 01-1 1H3a1 1 0 01-1-1V7zm4 2a1 1 0 000 2h4a1 1 0 000-2H6z"/></svg>
+        Caja
+      </div>
+      <div class="nav-item" onclick="showPage('pnl')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 11L5 7l3 3 4-5 3 3V14H1v-3z"/><path d="M1 1h14v2H1z"/></svg>
+        PnL Proyectado
+      </div>
+      <div class="nav-section-label">Registros</div>
+      <div class="nav-item" onclick="showPage('movimientos')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M14 2H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1zM2 12V5h12v7H2z"/><path d="M4 7h8v1H4zm0 2h5v1H4z"/></svg>
+        Movimientos
+      </div>
+      <div class="nav-item" onclick="showPage('proyectados')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM8 3v5l3 3-1 1-3.5-3.5V3H8z"/></svg>
+        Futuros / Proyectados
+      </div>
+      <div class="nav-item" onclick="showPage('periodicos')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 1a6 6 0 110 12A6 6 0 018 2z"/><path d="M7.5 4v4.5l3 1.5.5-.87-2.5-1.25V4z"/><circle cx="3" cy="8" r="1"/><circle cx="13" cy="8" r="1"/><circle cx="8" cy="3" r="1"/></svg>
+        Periódicos
+      </div>
+      <div class="nav-section-label">Sistema</div>
+      <div class="nav-item" onclick="showPage('config')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 5a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4z"/><path d="M8 0a1 1 0 01.97.758l.3 1.182a5.98 5.98 0 011.3.756l1.14-.456a1 1 0 011.273.475l.5.866a1 1 0 01-.232 1.255l-.935.747a6.09 6.09 0 010 1.514l.935.747a1 1 0 01.232 1.255l-.5.866a1 1 0 01-1.273.475l-1.14-.456a5.98 5.98 0 01-1.3.756l-.3 1.182A1 1 0 018 16a1 1 0 01-.97-.758l-.3-1.182a5.98 5.98 0 01-1.3-.756l-1.14.456a1 1 0 01-1.273-.475l-.5-.866a1 1 0 01.232-1.255l.935-.747a6.09 6.09 0 010-1.514l-.935-.747a1 1 0 01-.232-1.255l.5-.866A1 1 0 013.73 6.242l1.14.456a5.98 5.98 0 011.3-.756l.3-1.182A1 1 0 018 0z"/></svg>
+        Configuración
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="connection-status">
+        <div class="status-dot" id="connStatus"></div>
+        <span id="connLabel" style="color:rgba(255,255,255,0.4)">Sin conexión</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ====== PAGE: DASHBOARD ====== -->
+    <div id="page-dashboard" class="page active">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Resumen Financiero</div>
+          <div class="page-subtitle" id="dashSubtitle">cargando...</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openModal('ingreso')">+ Cobro</button>
+          <button class="btn btn-ghost" onclick="openModal('egreso')">+ Gasto</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="metrics-grid">
+          <div class="metric-card accent-orange">
+            <div class="metric-label">Saldo en Caja</div>
+            <div class="metric-value" id="m-saldo">—</div>
+            <div class="metric-delta neutral" id="m-saldo-delta">—</div>
+          </div>
+          <div class="metric-card accent-green">
+            <div class="metric-label">Ingresos del Mes</div>
+            <div class="metric-value positive" id="m-ingresos">—</div>
+            <div class="metric-delta" id="m-ingresos-delta">—</div>
+          </div>
+          <div class="metric-card accent-red">
+            <div class="metric-label">Egresos del Mes</div>
+            <div class="metric-value negative" id="m-egresos">—</div>
+            <div class="metric-delta" id="m-egresos-delta">—</div>
+          </div>
+          <div class="metric-card accent-navy">
+            <div class="metric-label">Resultado Neto</div>
+            <div class="metric-value" id="m-neto">—</div>
+            <div class="metric-delta neutral" id="m-neto-delta">— del mes</div>
+          </div>
+        </div>
+
+        <div class="panels-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Flujo Mensual (últimos 6 meses)</div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chartFlujo" role="img" aria-label="Gráfico de ingresos y egresos mensuales">Flujo de caja mensual.</canvas>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Distribución de Egresos</div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chartEgresos" role="img" aria-label="Distribución de egresos por categoría">Distribución por categoría.</canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-full">
+          <div class="panel-header">
+            <div class="panel-title">Últimos movimientos</div>
+            <span class="panel-action" onclick="showPage('movimientos')">ver todos →</span>
+          </div>
+          <table class="data-table" id="tbl-recientes">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Tipo</th>
+                <th style="text-align:right">Monto</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-recientes">
+              <tr><td colspan="5" class="empty-state">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE: CAJA ====== -->
+    <div id="page-caja" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Estado de Caja</div>
+          <div class="page-subtitle">saldo histórico acumulado</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openModal('ingreso')">+ Cobro</button>
+          <button class="btn btn-ghost" onclick="openModal('egreso')">+ Gasto</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="metrics-grid" style="grid-template-columns: repeat(3,1fr)">
+          <div class="metric-card accent-orange">
+            <div class="metric-label">Saldo Actual</div>
+            <div class="metric-value" id="caja-saldo">—</div>
+          </div>
+          <div class="metric-card accent-green">
+            <div class="metric-label">Total Ingresos Histórico</div>
+            <div class="metric-value positive" id="caja-ing-total">—</div>
+          </div>
+          <div class="metric-card accent-red">
+            <div class="metric-label">Total Egresos Histórico</div>
+            <div class="metric-value negative" id="caja-eg-total">—</div>
+          </div>
+        </div>
+        <div class="panel-full">
+          <div class="panel-header">
+            <div class="panel-title">Evolución de Caja</div>
+          </div>
+          <div style="padding:20px; position:relative; height:260px;">
+            <canvas id="chartCaja" role="img" aria-label="Evolución histórica del saldo de caja">Saldo acumulado.</canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE: PNL ====== -->
+    <div id="page-pnl" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">PnL Proyectado</div>
+          <div class="page-subtitle">real + proyectado 6 meses</div>
+        </div>
+        <div class="topbar-right">
+          <div class="month-nav">
+            <button class="month-btn" onclick="changePnlMonths(-1)">‹</button>
+            <span id="pnlMonthLabel">6 meses</span>
+            <button class="month-btn" onclick="changePnlMonths(1)">›</button>
+          </div>
+          <button class="btn btn-secondary" onclick="renderPnl()">↻ Actualizar</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="panel-full">
+          <div class="panel-header">
+            <div class="panel-title">Estado de Resultados Proyectado</div>
+            <span class="tag">Real + Proyectado según movimientos futuros cargados</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="pnl-table" id="pnlTable">
+              <thead id="pnlHead"></thead>
+              <tbody id="pnlBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE: MOVIMIENTOS ====== -->
+    <div id="page-movimientos" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Movimientos</div>
+          <div class="page-subtitle">cobros y gastos realizados</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openModal('ingreso')">+ Cobro</button>
+          <button class="btn btn-ghost" onclick="openModal('egreso')">+ Gasto</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="filters-bar">
+          <select class="filter-select" id="filtroTipo" onchange="renderMovimientos()">
+            <option value="">Todos los tipos</option>
+            <option value="ingreso">Ingresos</option>
+            <option value="egreso">Egresos</option>
+          </select>
+          <select class="filter-select" id="filtroCategoria" onchange="renderMovimientos()">
+            <option value="">Todas las categorías</option>
+          </select>
+          <select class="filter-select" id="filtroMes" onchange="renderMovimientos()">
+            <option value="">Todos los meses</option>
+          </select>
+        </div>
+        <div class="panel-full">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Cliente / Producto</th>
+                <th>Tipo</th>
+                <th style="text-align:right">Monto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-movimientos">
+              <tr><td colspan="7" class="empty-state">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE: PROYECTADOS ====== -->
+    <div id="page-proyectados" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Futuros & Proyectados</div>
+          <div class="page-subtitle">pagos y cobros esperados</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openModal('futuro-ingreso')">+ Cobro Futuro</button>
+          <button class="btn btn-ghost" onclick="openModal('futuro-egreso')">+ Pago Futuro</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="alert alert-info">Los movimientos proyectados alimentan el PnL pero NO impactan el saldo de caja hasta que sean marcados como realizados.</div>
+        <div class="panel-full">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha Esperada</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th style="text-align:right">Monto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-proyectados">
+              <tr><td colspan="7" class="empty-state">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE: PERIÓDICOS ====== -->
+    <div id="page-periodicos" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Cobros & Pagos Periódicos</div>
+          <div class="page-subtitle">reglas de recurrencia automática</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openModalPeriodico('ingreso')">+ Cobro Periódico</button>
+          <button class="btn btn-ghost" onclick="openModalPeriodico('egreso')">+ Pago Periódico</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="alert alert-info">Las reglas activas generan movimientos proyectados automáticamente al calcular el PnL. No crean registros reales hasta que los marcás como realizados.</div>
+
+        <div class="metrics-grid" style="grid-template-columns: repeat(4,1fr); margin-bottom:20px">
+          <div class="metric-card accent-green">
+            <div class="metric-label">Cobros Activos</div>
+            <div class="metric-value" id="per-cobros-activos">—</div>
+            <div class="metric-delta neutral" id="per-cobros-monto">—</div>
+          </div>
+          <div class="metric-card accent-red">
+            <div class="metric-label">Pagos Activos</div>
+            <div class="metric-value" id="per-pagos-activos">—</div>
+            <div class="metric-delta neutral" id="per-pagos-monto">—</div>
+          </div>
+          <div class="metric-card accent-orange">
+            <div class="metric-label">Flujo Neto Mensual</div>
+            <div class="metric-value" id="per-neto-mensual">—</div>
+            <div class="metric-delta neutral">estimado mensual</div>
+          </div>
+          <div class="metric-card accent-navy">
+            <div class="metric-label">Reglas Totales</div>
+            <div class="metric-value" id="per-total">—</div>
+            <div class="metric-delta neutral" id="per-inactivos">—</div>
+          </div>
+        </div>
+
+        <div class="panel-full">
+          <div class="panel-header">
+            <div class="panel-title">Ingresos Periódicos</div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Frecuencia</th>
+                <th>Día</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+                <th>Cliente / Producto</th>
+                <th>Estado</th>
+                <th style="text-align:right">Monto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-per-ingresos">
+              <tr><td colspan="10" class="empty-state">Sin reglas de ingreso</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel-full">
+          <div class="panel-header">
+            <div class="panel-title">Egresos Periódicos</div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Frecuencia</th>
+                <th>Día</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+                <th>Proveedor / Ref.</th>
+                <th>Estado</th>
+                <th style="text-align:right">Monto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-per-egresos">
+              <tr><td colspan="10" class="empty-state">Sin reglas de egreso</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE: CONFIG ====== -->
+    <div id="page-config" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Configuración</div>
+          <div class="page-subtitle">conexión supabase y preferencias</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="config-section">
+          <div class="config-section-title">Conexión Supabase</div>
+          <div class="config-section-desc">Los datos se guardan en tu proyecto Supabase. Ingresá la URL y la anon key.</div>
+          <div id="connAlert" class="alert alert-warning">⚠ Sin conexión. Ingresá las credenciales de Supabase para persistir datos.</div>
+          <div class="form-group">
+            <label class="form-label">Supabase URL</label>
+            <input type="text" class="form-control" id="cfgUrl" placeholder="https://xxxx.supabase.co" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Anon Key</label>
+            <input type="text" class="form-control" id="cfgKey" placeholder="eyJhbGci..." />
+            <div class="form-hint">Usá la anon/public key. Se guarda solo en tu browser (localStorage).</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="btn btn-primary" onclick="saveConfig()">Guardar y Conectar</button>
+            <div class="connection-status">
+              <div class="status-dot" id="configStatusDot"></div>
+              <span id="configStatusLabel" style="font-size:12px;color:var(--text-muted)">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-title">Schema SQL — Crear tablas</div>
+          <div class="config-section-desc">Ejecutá este SQL en el editor de Supabase (SQL Editor → New query) para crear las tablas necesarias.</div>
+          <div style="background:var(--navy-dark);border-radius:8px;padding:16px;overflow-x:auto">
+            <pre style="font-family:var(--mono);font-size:11px;color:#A8D8A8;white-space:pre;line-height:1.6" id="sqlSchema"></pre>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:12px" onclick="copySql()">Copiar SQL</button>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-title">Modo Local (sin Supabase)</div>
+          <div class="config-section-desc">Mientras no configures Supabase, los datos se guardan en localStorage del browser. No se sincroniza entre dispositivos.</div>
+          <div class="alert alert-warning">⚠ Solo para uso en esta computadora. Los datos se pueden perder si limpiás el browser.</div>
+          <button class="btn btn-ghost" onclick="useLocalMode()">Usar modo local</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL PERIODICO -->
+<div class="modal-overlay" id="modalPeriodicoOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalPeriodicoTitle">Nueva Regla Periódica</div>
+      <span class="modal-close" onclick="closeModalPeriodico()">×</span>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pEditId" value="">
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <div class="type-toggle">
+          <input type="radio" name="pTipo" id="pTipoIngreso" value="ingreso" checked>
+          <label for="pTipoIngreso" class="ingreso-label">↑ Cobro Periódico</label>
+          <input type="radio" name="pTipo" id="pTipoEgreso" value="egreso">
+          <label for="pTipoEgreso" class="egreso-label">↓ Pago Periódico</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="pDesc" placeholder="Ej: Membresía mensual — Constructora X">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Categoría</label>
+          <select class="form-control" id="pCat">
+            <option value="">— seleccioná —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monto (USD)</label>
+          <input type="number" class="form-control" id="pMonto" placeholder="0" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Frecuencia</label>
+          <select class="form-control" id="pFrecuencia" onchange="onFrecuenciaChange()">
+            <option value="mensual">Mensual</option>
+            <option value="bimestral">Bimestral (cada 2 meses)</option>
+            <option value="trimestral">Trimestral (cada 3 meses)</option>
+            <option value="semestral">Semestral (cada 6 meses)</option>
+            <option value="anual">Anual</option>
+            <option value="semanal">Semanal</option>
+            <option value="quincenal">Quincenal</option>
+          </select>
+        </div>
+        <div class="form-group" id="pDiaGroup">
+          <label class="form-label">Día del Mes</label>
+          <input type="number" class="form-control" id="pDia" placeholder="Ej: 5" min="1" max="31">
+          <div class="form-hint">Día en que cae el cobro/pago cada mes</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Fecha de Inicio</label>
+          <input type="date" class="form-control" id="pDesde">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fecha de Fin (opcional)</label>
+          <input type="date" class="form-control" id="pHasta">
+          <div class="form-hint">Dejar vacío = indefinido</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Producto</label>
+          <select class="form-control" id="pProducto">
+            <option value="">N/A</option>
+            <option value="winix20">Winix 2.0</option>
+            <option value="build">Winix Build</option>
+            <option value="ambos">Ambos</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <select class="form-control" id="pActivo">
+            <option value="1">Activo</option>
+            <option value="0">Pausado</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cliente / Proveedor (opcional)</label>
+        <input type="text" class="form-control" id="pCliente" placeholder="Nombre">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notas</label>
+        <input type="text" class="form-control" id="pNotas" placeholder="Observaciones...">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModalPeriodico()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarPeriodico()">Guardar Regla</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO MOVIMIENTO -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Nuevo Movimiento</div>
+      <span class="modal-close" onclick="closeModal()">×</span>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId" value="">
+      <div class="form-group" id="tipoGroup">
+        <label class="form-label">Tipo</label>
+        <div class="type-toggle">
+          <input type="radio" name="tipo" id="tipoIngreso" value="ingreso" checked>
+          <label for="tipoIngreso" class="ingreso-label">↑ Ingreso / Cobro</label>
+          <input type="radio" name="tipo" id="tipoEgreso" value="egreso">
+          <label for="tipoEgreso" class="egreso-label">↓ Egreso / Gasto</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="fDesc" placeholder="Ej: Membresía Enero - Constructora X">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Categoría</label>
+          <select class="form-control" id="fCat">
+            <option value="">— seleccioná —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monto (USD)</label>
+          <input type="number" class="form-control" id="fMonto" placeholder="0" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Fecha</label>
+          <input type="date" class="form-control" id="fFecha">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Producto</label>
+          <select class="form-control" id="fProducto">
+            <option value="">N/A</option>
+            <option value="winix20">Winix 2.0</option>
+            <option value="build">Winix Build</option>
+            <option value="ambos">Ambos</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cliente (opcional)</label>
+        <input type="text" class="form-control" id="fCliente" placeholder="Nombre del cliente">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notas</label>
+        <input type="text" class="form-control" id="fNotas" placeholder="Observaciones...">
+      </div>
+      <div class="form-group" id="proyectadoGroup" style="display:none">
+        <label class="form-label">Estado</label>
+        <select class="form-control" id="fEstado">
+          <option value="proyectado">Proyectado (futuro)</option>
+          <option value="realizado">Realizado (ya ocurrió)</option>
+        </select>
+        <div class="form-hint">Los proyectados aparecen en el PnL pero no en el saldo de caja hasta realizarse.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarMovimiento()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// CONFIG & STATE
+// =============================================
+
+const CATEGORIAS_EGRESO = [
+  'Costo Desarrollo (Mateo)',
+  'Consultoría',
+  'Legales',
+  'Mantenimiento Cliente',
+  'Infraestructura',
+  'Marketing',
+  'Otros Egresos'
+];
+
+const CATEGORIAS_INGRESO = [
+  'Desarrollo',
+  'Membresía Winix 2.0',
+  'Membresía Winix Build',
+  'Otros Ingresos'
+];
+
+let CONFIG = { url: '', key: '', mode: 'local' };
+let MOVIMIENTOS = [];
+let PERIODICOS = [];
+let chartFlujo, chartEgresos, chartCaja;
+let pnlMonths = 6;
+let modalMode = 'ingreso';
+
+function loadConfig() {
+  const saved = localStorage.getItem('winix_cfg');
+  if (saved) CONFIG = JSON.parse(saved);
+  if (CONFIG.url && CONFIG.key) {
+    document.getElementById('cfgUrl').value = CONFIG.url;
+    document.getElementById('cfgKey').value = CONFIG.key;
+  }
+  updateConnStatus('loading', 'Conectando...');
+}
+
+function saveConfig() {
+  CONFIG.url = document.getElementById('cfgUrl').value.trim();
+  CONFIG.key = document.getElementById('cfgKey').value.trim();
+  CONFIG.mode = 'supabase';
+  localStorage.setItem('winix_cfg', JSON.stringify(CONFIG));
+  init();
+}
+
+function useLocalMode() {
+  CONFIG.mode = 'local';
+  localStorage.setItem('winix_cfg', JSON.stringify(CONFIG));
+  updateConnStatus('connected', 'Modo local');
+  document.getElementById('connAlert').className = 'alert alert-warning';
+  document.getElementById('connAlert').textContent = '⚠ Modo local activo. Los datos viven en este browser.';
+  init();
+}
+
+function updateConnStatus(state, label) {
+  ['connStatus','configStatusDot'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'status-dot ' + state;
+  });
+  document.getElementById('connLabel').textContent = label;
+  document.getElementById('configStatusLabel').textContent = label;
+}
+
+// =============================================
+// DATA LAYER
+// =============================================
+
+async function supabaseFetch(table, method='GET', body=null, id=null) {
+  const base = CONFIG.url + '/rest/v1/' + table;
+  const url = id ? base + '?id=eq.' + id : base;
+  const orderCol = table === 'periodicos' ? 'created_at' : 'fecha';
+  const opts = {
+    headers: {
+      'apikey': CONFIG.key,
+      'Authorization': 'Bearer ' + CONFIG.key,
+      'Content-Type': 'application/json',
+      'Prefer': method === 'POST' ? 'return=representation' : 'return=minimal'
+    },
+    method
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url + (method==='GET' ? '?order=' + orderCol + '.desc&limit=500' : ''), opts);
+  if (!res.ok) throw new Error(await res.text());
+  return method === 'GET' ? res.json() : res;
+}
+
+function localLoad() {
+  const saved = localStorage.getItem('winix_movs');
+  MOVIMIENTOS = saved ? JSON.parse(saved) : [];
+  const savedP = localStorage.getItem('winix_periodicos');
+  PERIODICOS = savedP ? JSON.parse(savedP) : [];
+}
+
+function localSave() {
+  localStorage.setItem('winix_movs', JSON.stringify(MOVIMIENTOS));
+  localStorage.setItem('winix_periodicos', JSON.stringify(PERIODICOS));
+}
+
+async function loadData() {
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try {
+      MOVIMIENTOS = await supabaseFetch('movimientos');
+      PERIODICOS = await supabaseFetch('periodicos');
+      updateConnStatus('connected', 'Supabase OK');
+      document.getElementById('connAlert').className = 'alert alert-success';
+      document.getElementById('connAlert').textContent = '✓ Conectado a Supabase correctamente.';
+    } catch(e) {
+      updateConnStatus('error', 'Error Supabase');
+      document.getElementById('connAlert').className = 'alert alert-error';
+      document.getElementById('connAlert').textContent = '✗ Error: ' + e.message + '. Verificá las credenciales.';
+      localLoad();
+    }
+  } else {
+    localLoad();
+    if (CONFIG.mode === 'local') {
+      updateConnStatus('connected', 'Local');
+    } else {
+      updateConnStatus('error', 'Sin config');
+    }
+  }
+}
+
+async function saveMovimiento(mov) {
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try {
+      if (mov.id) {
+        await supabaseFetch('movimientos', 'PATCH', mov, mov.id);
+      } else {
+        const res = await supabaseFetch('movimientos', 'POST', mov);
+        const data = await res.json();
+        if (data[0]) mov.id = data[0].id;
+      }
+    } catch(e) {
+      alert('Error guardando en Supabase: ' + e.message);
+      return false;
+    }
+  }
+  // Always update local
+  if (mov.id) {
+    const idx = MOVIMIENTOS.findIndex(m => m.id === mov.id);
+    if (idx >= 0) MOVIMIENTOS[idx] = mov; else MOVIMIENTOS.unshift(mov);
+  } else {
+    mov.id = 'local_' + Date.now();
+    MOVIMIENTOS.unshift(mov);
+  }
+  localSave();
+  return true;
+}
+
+async function deleteMovimiento(id) {
+  if (!confirm('¿Eliminar este movimiento?')) return;
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try {
+      await supabaseFetch('movimientos', 'DELETE', null, id);
+    } catch(e) {
+      alert('Error eliminando: ' + e.message);
+    }
+  }
+  MOVIMIENTOS = MOVIMIENTOS.filter(m => m.id !== id);
+  localSave();
+  await refreshAll();
+}
+
+async function realizarMovimiento(id) {
+  const mov = MOVIMIENTOS.find(m => m.id === id);
+  if (!mov) return;
+  mov.estado = 'realizado';
+  const ok = await saveMovimiento(mov);
+  if (ok) await refreshAll();
+}
+
+// =============================================
+// PERIÓDICOS — ENGINE
+// =============================================
+
+const FRECUENCIA_MESES = {
+  mensual: 1, bimestral: 2, trimestral: 3, semestral: 6, anual: 12
+};
+
+function nextOccurrences(regla, fromYM, toYM) {
+  const results = [];
+  const dia = parseInt(regla.dia) || 1;
+  const desde = regla.desde || fromYM + '-01';
+  const hasta = regla.hasta || null;
+  const freq = regla.frecuencia || 'mensual';
+  const saltoMeses = FRECUENCIA_MESES[freq];
+
+  if (!saltoMeses) {
+    const days = freq === 'semanal' ? 7 : 15;
+    let cur = new Date(desde);
+    const endDate = new Date(toYM + '-28');
+    while (cur <= endDate) {
+      const ym = cur.getFullYear() + '-' + String(cur.getMonth()+1).padStart(2,'0');
+      if (ym >= fromYM && ym <= toYM) {
+        if (!hasta || cur.toISOString().slice(0,10) <= hasta) {
+          results.push(cur.toISOString().slice(0,10));
+        }
+      }
+      cur = new Date(cur.getTime() + days * 86400000);
+    }
+    return results;
+  }
+
+  let startDate = new Date(desde);
+  let curY = startDate.getFullYear();
+  let curM = startDate.getMonth();
+
+  while (true) {
+    const ym = curY + '-' + String(curM+1).padStart(2,'0');
+    if (ym > toYM) break;
+    const maxDay = new Date(curY, curM+1, 0).getDate();
+    const d = Math.min(dia, maxDay);
+    const dateStr = ym + '-' + String(d).padStart(2,'0');
+    if (dateStr >= desde && ym >= fromYM && ym <= toYM) {
+      if (!hasta || dateStr <= hasta) results.push(dateStr);
+    }
+    curM += saltoMeses;
+    while (curM >= 12) { curM -= 12; curY++; }
+  }
+  return results;
+}
+
+function expandPeriodicos(fromYM, toYM) {
+  const virtual = [];
+  for (const r of PERIODICOS) {
+    if (!r.activo) continue;
+    const dates = nextOccurrences(r, fromYM, toYM);
+    for (const fecha of dates) {
+      virtual.push({
+        id: 'per_' + r.id + '_' + fecha,
+        tipo: r.tipo,
+        descripcion: r.descripcion + ' (' + labelFrecuencia(r.frecuencia) + ')',
+        categoria: r.categoria,
+        monto: r.monto,
+        fecha,
+        producto: r.producto,
+        cliente: r.cliente,
+        notas: r.notas,
+        estado: 'proyectado',
+        es_periodico: true,
+        periodico_id: r.id
+      });
+    }
+  }
+  return virtual;
+}
+
+function labelFrecuencia(f) {
+  const map = { mensual:'mensual', bimestral:'bim.', trimestral:'trim.', semestral:'sem.', anual:'anual', semanal:'semanal', quincenal:'quincenal' };
+  return map[f] || f;
+}
+
+async function savePeriodico(p) {
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try {
+      if (p.id && !String(p.id).startsWith('local_')) {
+        await supabaseFetch('periodicos', 'PATCH', p, p.id);
+      } else {
+        const res = await supabaseFetch('periodicos', 'POST', p);
+        const data = await res.json();
+        if (data[0]) p.id = data[0].id;
+      }
+    } catch(e) { alert('Error guardando en Supabase: ' + e.message); return false; }
+  }
+  if (p.id) {
+    const idx = PERIODICOS.findIndex(x => x.id === p.id);
+    if (idx >= 0) PERIODICOS[idx] = p; else PERIODICOS.unshift(p);
+  } else {
+    p.id = 'local_' + Date.now();
+    PERIODICOS.unshift(p);
+  }
+  localSave();
+  return true;
+}
+
+async function deletePeriodico(id) {
+  if (!confirm('¿Eliminar esta regla periódica?')) return;
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try { await supabaseFetch('periodicos', 'DELETE', null, id); }
+    catch(e) { alert('Error: ' + e.message); }
+  }
+  PERIODICOS = PERIODICOS.filter(p => p.id !== id);
+  localSave();
+  await refreshAll();
+}
+
+async function togglePeriodico(id) {
+  const p = PERIODICOS.find(x => x.id === id);
+  if (!p) return;
+  p.activo = !p.activo;
+  await savePeriodico(p);
+  await refreshAll();
+}
+
+function renderPeriodicos() {
+  const ingresos = PERIODICOS.filter(p => p.tipo === 'ingreso');
+  const egresos = PERIODICOS.filter(p => p.tipo === 'egreso');
+  const activos = PERIODICOS.filter(p => p.activo);
+  const cobActivos = activos.filter(p => p.tipo === 'ingreso');
+  const pagActivos = activos.filter(p => p.tipo === 'egreso');
+
+  function toMensual(p) {
+    if (p.frecuencia === 'semanal') return p.monto * 4.3;
+    if (p.frecuencia === 'quincenal') return p.monto * 2;
+    const m = FRECUENCIA_MESES[p.frecuencia] || 1;
+    return p.monto / m;
+  }
+
+  const ingMen = cobActivos.reduce((s,p) => s + toMensual(p), 0);
+  const egMen = pagActivos.reduce((s,p) => s + toMensual(p), 0);
+  const netoMen = ingMen - egMen;
+
+  document.getElementById('per-cobros-activos').textContent = cobActivos.length;
+  document.getElementById('per-cobros-monto').textContent = '~' + fmtUSD(ingMen) + '/mes';
+  document.getElementById('per-pagos-activos').textContent = pagActivos.length;
+  document.getElementById('per-pagos-monto').textContent = '~' + fmtUSD(egMen) + '/mes';
+  document.getElementById('per-neto-mensual').textContent = fmtUSD(netoMen);
+  document.getElementById('per-neto-mensual').className = 'metric-value ' + (netoMen >= 0 ? 'positive' : 'negative');
+  document.getElementById('per-total').textContent = PERIODICOS.length;
+  const inact = PERIODICOS.filter(p=>!p.activo).length;
+  document.getElementById('per-inactivos').textContent = inact > 0 ? inact + ' pausada' + (inact>1?'s':'') : 'todas activas';
+
+  renderTablaPerio('tbody-per-ingresos', ingresos);
+  renderTablaPerio('tbody-per-egresos', egresos);
+}
+
+function renderTablaPerio(tbodyId, rows) {
+  const tbody = document.getElementById(tbodyId);
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="10" class="empty-state">Sin reglas configuradas</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(p => `
+    <tr style="${p.activo ? '' : 'opacity:0.5'}">
+      <td>
+        <div style="font-size:13px;font-weight:500">${p.descripcion}</div>
+        ${p.notas ? '<div style="font-size:11px;color:var(--text-muted)">' + p.notas + '</div>' : ''}
+      </td>
+      <td>${p.categoria ? '<span class="badge badge-dev">' + p.categoria + '</span>' : '—'}</td>
+      <td><span class="badge badge-recurrente">${p.frecuencia || 'mensual'}</span></td>
+      <td style="font-family:var(--mono);font-size:12px">${(p.frecuencia==='semanal'||p.frecuencia==='quincenal') ? '—' : 'día ' + (p.dia || '—')}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">${fmtDate(p.desde)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">${p.hasta ? fmtDate(p.hasta) : '∞'}</td>
+      <td>
+        ${p.producto ? '<span class="badge badge-' + (p.producto==='winix20'?'winix20':'build') + '">' + p.producto + '</span> ' : ''}
+        <span style="font-size:12px;color:var(--text-muted)">${p.cliente || ''}</span>
+      </td>
+      <td>
+        <span class="badge ${p.activo ? 'badge-activo' : 'badge-inactivo'}" style="cursor:pointer" onclick="togglePeriodico('${p.id}')" title="Click para pausar/activar">
+          ${p.activo ? 'Activo' : 'Pausado'}
+        </span>
+      </td>
+      <td style="text-align:right" class="${p.tipo==='ingreso'?'amount-positive':'amount-negative'}">${fmtUSD(p.monto)}</td>
+      <td>
+        <div class="action-bar">
+          <button class="icon-btn" title="Editar" onclick="editarPeriodico('${p.id}')">✏</button>
+          <button class="icon-btn" title="Eliminar" onclick="deletePeriodico('${p.id}')">✕</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openModalPeriodico(tipo) {
+  document.getElementById('pEditId').value = '';
+  document.getElementById('modalPeriodicoTitle').textContent = tipo === 'ingreso' ? 'Nuevo Cobro Periódico' : 'Nuevo Pago Periódico';
+  if (tipo === 'ingreso') document.getElementById('pTipoIngreso').checked = true;
+  else document.getElementById('pTipoEgreso').checked = true;
+  updatePCatOptions();
+  document.getElementById('pDesc').value = '';
+  document.getElementById('pMonto').value = '';
+  document.getElementById('pFrecuencia').value = 'mensual';
+  document.getElementById('pDia').value = '5';
+  document.getElementById('pDesde').value = new Date().toISOString().slice(0,7) + '-01';
+  document.getElementById('pHasta').value = '';
+  document.getElementById('pProducto').value = '';
+  document.getElementById('pCliente').value = '';
+  document.getElementById('pNotas').value = '';
+  document.getElementById('pActivo').value = '1';
+  onFrecuenciaChange();
+  document.getElementById('modalPeriodicoOverlay').classList.add('open');
+}
+
+function editarPeriodico(id) {
+  const p = PERIODICOS.find(x => x.id === id);
+  if (!p) return;
+  openModalPeriodico(p.tipo);
+  document.getElementById('pEditId').value = p.id;
+  document.getElementById('modalPeriodicoTitle').textContent = 'Editar Regla Periódica';
+  if (p.tipo === 'ingreso') document.getElementById('pTipoIngreso').checked = true;
+  else document.getElementById('pTipoEgreso').checked = true;
+  updatePCatOptions();
+  document.getElementById('pDesc').value = p.descripcion || '';
+  document.getElementById('pCat').value = p.categoria || '';
+  document.getElementById('pMonto').value = p.monto || '';
+  document.getElementById('pFrecuencia').value = p.frecuencia || 'mensual';
+  document.getElementById('pDia').value = p.dia || '';
+  document.getElementById('pDesde').value = p.desde || '';
+  document.getElementById('pHasta').value = p.hasta || '';
+  document.getElementById('pProducto').value = p.producto || '';
+  document.getElementById('pCliente').value = p.cliente || '';
+  document.getElementById('pNotas').value = p.notas || '';
+  document.getElementById('pActivo').value = p.activo ? '1' : '0';
+  onFrecuenciaChange();
+}
+
+function closeModalPeriodico() {
+  document.getElementById('modalPeriodicoOverlay').classList.remove('open');
+}
+
+function onFrecuenciaChange() {
+  const freq = document.getElementById('pFrecuencia').value;
+  document.getElementById('pDiaGroup').style.display = (freq==='semanal'||freq==='quincenal') ? 'none' : 'block';
+}
+
+function updatePCatOptions() {
+  const isEgreso = document.getElementById('pTipoEgreso').checked;
+  const cats = isEgreso ? CATEGORIAS_EGRESO : CATEGORIAS_INGRESO;
+  document.getElementById('pCat').innerHTML = '<option value="">— seleccioná —</option>' +
+    cats.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+async function guardarPeriodico() {
+  const tipo = document.querySelector('input[name="pTipo"]:checked').value;
+  const desc = document.getElementById('pDesc').value.trim();
+  const cat = document.getElementById('pCat').value;
+  const monto = parseFloat(document.getElementById('pMonto').value);
+  const frecuencia = document.getElementById('pFrecuencia').value;
+  const dia = parseInt(document.getElementById('pDia').value) || 1;
+  const desde = document.getElementById('pDesde').value;
+  const hasta = document.getElementById('pHasta').value || null;
+  const producto = document.getElementById('pProducto').value;
+  const cliente = document.getElementById('pCliente').value.trim();
+  const notas = document.getElementById('pNotas').value.trim();
+  const activo = document.getElementById('pActivo').value === '1';
+  const editId = document.getElementById('pEditId').value;
+
+  if (!desc || !monto || !desde) { alert('Completá descripción, monto y fecha de inicio.'); return; }
+  if (isNaN(monto) || monto <= 0) { alert('Monto inválido.'); return; }
+
+  const p = { tipo, descripcion:desc, categoria:cat, monto, frecuencia, dia, desde, hasta, producto, cliente, notas, activo };
+  if (editId) p.id = editId;
+
+  const ok = await savePeriodico(p);
+  if (ok) { closeModalPeriodico(); await refreshAll(); }
+}
+
+// =============================================
+// FORMATTING
+// =============================================
+
+function fmtUSD(v) {
+  const abs = Math.abs(v || 0);
+  const str = abs.toLocaleString('es-AR', {minimumFractionDigits:0, maximumFractionDigits:0});
+  return (v < 0 ? '−' : '') + 'USD ' + str;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  const parts = d.split('-');
+  return parts[2] + '/' + parts[1] + '/' + parts[0];
+}
+
+function monthLabel(ym) {
+  const [y, m] = ym.split('-');
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return months[parseInt(m)-1] + ' ' + y.slice(2);
+}
+
+function addMonths(ym, n) {
+  let [y, m] = ym.split('-').map(Number);
+  m += n;
+  while (m > 12) { m -= 12; y++; }
+  while (m < 1) { m += 12; y--; }
+  return y + '-' + String(m).padStart(2,'0');
+}
+
+function currentYM() {
+  const now = new Date();
+  return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+}
+
+function movYM(mov) {
+  return (mov.fecha || '').slice(0,7);
+}
+
+// =============================================
+// DASHBOARD
+// =============================================
+
+function renderDashboard() {
+  const now = currentYM();
+  const realizados = MOVIMIENTOS.filter(m => m.estado !== 'proyectado');
+  const delMes = realizados.filter(m => movYM(m) === now);
+
+  const ingMes = delMes.filter(m => m.tipo === 'ingreso').reduce((s,m) => s + (m.monto||0), 0);
+  const egMes = delMes.filter(m => m.tipo === 'egreso').reduce((s,m) => s + (m.monto||0), 0);
+  const saldoTotal = realizados.reduce((s,m) => m.tipo==='ingreso' ? s+(m.monto||0) : s-(m.monto||0), 0);
+  const neto = ingMes - egMes;
+
+  document.getElementById('m-saldo').textContent = fmtUSD(saldoTotal);
+  document.getElementById('m-saldo').className = 'metric-value ' + (saldoTotal >= 0 ? 'positive' : 'negative');
+  document.getElementById('m-saldo-delta').textContent = 'saldo acumulado histórico';
+  document.getElementById('m-ingresos').textContent = fmtUSD(ingMes);
+  document.getElementById('m-egresos').textContent = fmtUSD(egMes);
+  document.getElementById('m-neto').textContent = fmtUSD(neto);
+  document.getElementById('m-neto').className = 'metric-value ' + (neto >= 0 ? 'positive' : 'negative');
+
+  const months = ['Syne', 'DM Mono']; // placeholder
+  const d = new Date();
+  document.getElementById('dashSubtitle').textContent =
+    d.toLocaleDateString('es-AR', {month:'long', year:'numeric'});
+
+  renderChartFlujo(realizados);
+  renderChartEgresos(realizados.filter(m => m.tipo==='egreso' && movYM(m)===now));
+  renderRecientes(realizados.slice(0,8));
+}
+
+function getLastNMonths(n) {
+  const ym = currentYM();
+  const res = [];
+  for (let i = n-1; i >= 0; i--) res.push(addMonths(ym, -i));
+  return res;
+}
+
+function renderChartFlujo(movs) {
+  const months = getLastNMonths(6);
+  const ings = months.map(ym => movs.filter(m => m.tipo==='ingreso' && movYM(m)===ym).reduce((s,m)=>s+(m.monto||0),0));
+  const egs = months.map(ym => movs.filter(m => m.tipo==='egreso' && movYM(m)===ym).reduce((s,m)=>s+(m.monto||0),0));
+
+  if (chartFlujo) chartFlujo.destroy();
+  const ctx = document.getElementById('chartFlujo').getContext('2d');
+  chartFlujo = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: months.map(monthLabel),
+      datasets: [
+        { label: 'Ingresos', data: ings, backgroundColor: '#1A8A5A', borderRadius: 4, barPercentage: 0.6 },
+        { label: 'Egresos', data: egs, backgroundColor: '#C0392B', borderRadius: 4, barPercentage: 0.6 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11, family: 'DM Mono' }, color: '#6B6960' } },
+        y: { grid: { color: '#E2E0D8' }, ticks: { callback: v => 'U$' + (v/1000).toFixed(0) + 'k', font: { size: 10 }, color: '#6B6960' } }
+      }
+    }
+  });
+}
+
+function renderChartEgresos(egs) {
+  const cats = {};
+  egs.forEach(m => { cats[m.categoria] = (cats[m.categoria]||0) + m.monto; });
+  const labels = Object.keys(cats);
+  const data = labels.map(l => cats[l]);
+
+  if (chartEgresos) chartEgresos.destroy();
+  if (labels.length === 0) return;
+
+  const colors = ['#1B3A6B','#E8511A','#1A8A5A','#B83D11','#0F2240','#3A7BCA','#8A4A1A'];
+  const ctx = document.getElementById('chartEgresos').getContext('2d');
+  chartEgresos = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data, backgroundColor: colors.slice(0, labels.length), borderWidth: 0, hoverOffset: 4 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '60%',
+      plugins: { legend: { position: 'right', labels: { font: { size: 11, family: 'DM Mono' }, boxWidth: 10, color: '#3A3935' } } }
+    }
+  });
+}
+
+function renderRecientes(movs) {
+  const tbody = document.getElementById('tbody-recientes');
+  if (!movs.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><div class="empty-state-icon">📋</div>No hay movimientos registrados</td></tr>';
+    return;
+  }
+  tbody.innerHTML = movs.map(m => `
+    <tr>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">${fmtDate(m.fecha)}</td>
+      <td>${m.descripcion || '—'}</td>
+      <td>${m.categoria ? '<span class="badge badge-dev">'+m.categoria+'</span>' : '—'}</td>
+      <td>${m.tipo === 'ingreso' ? '<span class="badge badge-ingreso">Ingreso</span>' : '<span class="badge badge-egreso">Egreso</span>'}</td>
+      <td style="text-align:right" class="${m.tipo==='ingreso'?'amount-positive':'amount-negative'}">${m.tipo==='ingreso'?'+':'-'}${fmtUSD(m.monto)}</td>
+    </tr>
+  `).join('');
+}
+
+// =============================================
+// CAJA
+// =============================================
+
+function renderCaja() {
+  const realizados = MOVIMIENTOS.filter(m => m.estado !== 'proyectado');
+  const ingTotal = realizados.filter(m=>m.tipo==='ingreso').reduce((s,m)=>s+(m.monto||0),0);
+  const egTotal = realizados.filter(m=>m.tipo==='egreso').reduce((s,m)=>s+(m.monto||0),0);
+  const saldo = ingTotal - egTotal;
+
+  document.getElementById('caja-saldo').textContent = fmtUSD(saldo);
+  document.getElementById('caja-saldo').className = 'metric-value ' + (saldo>=0?'positive':'negative');
+  document.getElementById('caja-ing-total').textContent = fmtUSD(ingTotal);
+  document.getElementById('caja-eg-total').textContent = fmtUSD(egTotal);
+
+  // Build cumulative by month
+  const sorted = [...realizados].sort((a,b)=> (a.fecha||'') < (b.fecha||'') ? -1 : 1);
+  const byMonth = {};
+  sorted.forEach(m => {
+    const ym = movYM(m);
+    if (!byMonth[ym]) byMonth[ym] = 0;
+    byMonth[ym] += m.tipo==='ingreso' ? m.monto : -m.monto;
+  });
+  const months = Object.keys(byMonth).sort();
+  let running = 0;
+  const saldos = months.map(ym => { running += byMonth[ym]; return running; });
+
+  if (chartCaja) chartCaja.destroy();
+  if (!months.length) return;
+  const ctx = document.getElementById('chartCaja').getContext('2d');
+  chartCaja = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: months.map(monthLabel),
+      datasets: [{
+        label: 'Saldo', data: saldos,
+        borderColor: '#E8511A', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#E8511A',
+        fill: true, backgroundColor: 'rgba(232,81,26,0.08)', tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11, family: 'DM Mono' }, color: '#6B6960' } },
+        y: { grid: { color: '#E2E0D8' }, ticks: { callback: v => 'U$'+v.toLocaleString(), font: { size: 10 }, color: '#6B6960' } }
+      }
+    }
+  });
+}
+
+// =============================================
+// PNL
+// =============================================
+
+function changePnlMonths(delta) {
+  pnlMonths = Math.max(3, Math.min(12, pnlMonths + delta));
+  document.getElementById('pnlMonthLabel').textContent = pnlMonths + ' meses';
+  renderPnl();
+}
+
+function renderPnl() {
+  const ym = currentYM();
+  const months = [];
+  for (let i = 0; i < pnlMonths; i++) months.push(addMonths(ym, i));
+
+  // Expand periódicos into virtual movimientos for the PnL window
+  const lastYM = months[months.length - 1];
+  const firstYM = months[0];
+  const virtualPer = expandPeriodicos(firstYM, lastYM);
+
+  // Merge: real movimientos + manual proyectados + periódico-virtual
+  // Deduplicate: if a periodico occurrence is already in MOVIMIENTOS (marked realizado), don't double count
+  const realAndManual = MOVIMIENTOS;
+  const allMovs = [...realAndManual, ...virtualPer];
+
+  function sumCat(cat, tipo, mym) {
+    return allMovs
+      .filter(m => m.categoria === cat && m.tipo === tipo && movYM(m) === mym)
+      .reduce((s,m) => s+(m.monto||0), 0);
+  }
+
+  function sumTipo(tipo, mym) {
+    return allMovs
+      .filter(m => m.tipo === tipo && movYM(m) === mym)
+      .reduce((s,m) => s+(m.monto||0), 0);
+  }
+
+  // Build thead
+  const head = document.getElementById('pnlHead');
+  head.innerHTML = '<tr><th style="width:200px">Concepto</th>' + months.map(m =>
+    '<th style="min-width:90px">' + monthLabel(m) + '</th>'
+  ).join('') + '<th>Total</th></tr>';
+
+  // Build tbody rows
+  const rows = [];
+
+  const addSection = label => rows.push({ type:'section', label });
+  const addRow = (label, getter) => rows.push({ type:'row', label, getter });
+  const addTotal = (label, getter) => rows.push({ type:'total', label, getter });
+
+  addSection('INGRESOS');
+  CATEGORIAS_INGRESO.forEach(cat => addRow(cat, m => sumCat(cat,'ingreso',m)));
+  addTotal('Total Ingresos', m => sumTipo('ingreso', m));
+
+  addSection('EGRESOS');
+  CATEGORIAS_EGRESO.forEach(cat => addRow(cat, m => sumCat(cat,'egreso',m)));
+  addTotal('Total Egresos', m => sumTipo('egreso', m));
+
+  addSection('RESULTADO');
+  addTotal('Resultado Neto', m => sumTipo('ingreso',m) - sumTipo('egreso',m));
+
+  const tbody = document.getElementById('pnlBody');
+  tbody.innerHTML = rows.map(row => {
+    if (row.type === 'section') {
+      return '<tr class="section-header"><td colspan="' + (months.length+2) + '">' + row.label + '</td></tr>';
+    }
+    const vals = months.map(m => row.getter(m));
+    const total = vals.reduce((s,v) => s+v, 0);
+    const isTotalOrNet = row.type === 'total';
+    const isNet = row.label === 'Resultado Neto';
+
+    const fmtCell = (v, isEgreso=false) => {
+      if (v === 0) return '<td style="color:var(--text-muted)">—</td>';
+      if (isNet) {
+        const cls = v >= 0 ? 'color:var(--green)' : 'color:var(--red)';
+        return '<td style="'+cls+'">' + fmtUSD(v) + '</td>';
+      }
+      if (isEgreso) return '<td style="color:var(--red)">' + fmtUSD(v) + '</td>';
+      return '<td>' + fmtUSD(v) + '</td>';
+    };
+
+    const isEg = row.label.toLowerCase().includes('egreso') || CATEGORIAS_EGRESO.includes(row.label);
+    const trClass = isNet ? 'net-row' : (isTotalOrNet ? 'total-row' : '');
+
+    return '<tr class="' + trClass + '"><td>' + row.label + '</td>' +
+      vals.map(v => fmtCell(v, isEg)).join('') +
+      fmtCell(total, isEg) + '</tr>';
+  }).join('');
+
+  // Mark future months
+  months.forEach((m, i) => {
+    if (m > ym) {
+      const cells = tbody.querySelectorAll('tr td:nth-child(' + (i+2) + ')');
+      cells.forEach(c => { if (c.style.color !== 'rgb(192, 57, 43)' && c.style.color !== 'rgb(26, 138, 90)') c.style.opacity = '0.6'; });
+    }
+  });
+}
+
+// =============================================
+// MOVIMIENTOS LIST
+// =============================================
+
+function renderMovimientos() {
+  const filtroTipo = document.getElementById('filtroTipo').value;
+  const filtroCat = document.getElementById('filtroCategoria').value;
+  const filtroMes = document.getElementById('filtroMes').value;
+
+  const realizados = MOVIMIENTOS.filter(m => m.estado !== 'proyectado');
+
+  // Populate filters
+  const cats = [...new Set(realizados.map(m=>m.categoria).filter(Boolean))].sort();
+  const catSel = document.getElementById('filtroCategoria');
+  const curCat = catSel.value;
+  catSel.innerHTML = '<option value="">Todas las categorías</option>' + cats.map(c=>`<option value="${c}" ${c===curCat?'selected':''}>${c}</option>`).join('');
+
+  const meses = [...new Set(realizados.map(m=>movYM(m)).filter(Boolean))].sort().reverse();
+  const mesSel = document.getElementById('filtroMes');
+  const curMes = mesSel.value;
+  mesSel.innerHTML = '<option value="">Todos los meses</option>' + meses.map(m=>`<option value="${m}" ${m===curMes?'selected':''}>${monthLabel(m)}</option>`).join('');
+
+  let movs = realizados;
+  if (filtroTipo) movs = movs.filter(m=>m.tipo===filtroTipo);
+  if (filtroCat) movs = movs.filter(m=>m.categoria===filtroCat);
+  if (filtroMes) movs = movs.filter(m=>movYM(m)===filtroMes);
+
+  movs.sort((a,b) => (b.fecha||'') < (a.fecha||'') ? -1 : 1);
+
+  const tbody = document.getElementById('tbody-movimientos');
+  if (!movs.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">📋</div>No hay movimientos para los filtros seleccionados</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = movs.map(m => `
+    <tr>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">${fmtDate(m.fecha)}</td>
+      <td>
+        <div style="font-size:13px">${m.descripcion||'—'}</div>
+        ${m.notas ? '<div style="font-size:11px;color:var(--text-muted)">'+ m.notas +'</div>' : ''}
+      </td>
+      <td>${m.categoria ? '<span class="badge badge-dev">'+m.categoria+'</span>' : '—'}</td>
+      <td>
+        ${m.producto ? '<span class="badge badge-'+(m.producto==='winix20'?'winix20':'build')+'">'+m.producto+'</span>' : ''}
+        ${m.cliente ? '<span style="font-size:12px;color:var(--text-muted);margin-left:4px">'+m.cliente+'</span>' : ''}
+      </td>
+      <td>${m.tipo === 'ingreso' ? '<span class="badge badge-ingreso">Ingreso</span>' : '<span class="badge badge-egreso">Egreso</span>'}</td>
+      <td style="text-align:right" class="${m.tipo==='ingreso'?'amount-positive':'amount-negative'}">${m.tipo==='ingreso'?'+':'-'}${fmtUSD(m.monto)}</td>
+      <td>
+        <div class="action-bar">
+          <button class="icon-btn" title="Editar" onclick='editarMovimiento("${m.id}")'>✏</button>
+          <button class="icon-btn" title="Eliminar" onclick='deleteMovimiento("${m.id}")'>✕</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// =============================================
+// PROYECTADOS
+// =============================================
+
+function renderProyectados() {
+  const proy = MOVIMIENTOS.filter(m => m.estado === 'proyectado');
+  proy.sort((a,b) => (a.fecha||'') < (b.fecha||'') ? -1 : 1);
+
+  const tbody = document.getElementById('tbody-proyectados');
+  if (!proy.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">⏳</div>No hay movimientos proyectados cargados</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = proy.map(m => `
+    <tr>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">${fmtDate(m.fecha)}</td>
+      <td>${m.descripcion||'—'}</td>
+      <td>${m.categoria ? '<span class="badge badge-dev">'+m.categoria+'</span>' : '—'}</td>
+      <td>${m.tipo === 'ingreso' ? '<span class="badge badge-ingreso">Ingreso</span>' : '<span class="badge badge-egreso">Egreso</span>'}</td>
+      <td><span class="badge badge-pendiente">Proyectado</span></td>
+      <td style="text-align:right" class="${m.tipo==='ingreso'?'amount-positive':'amount-negative'}">${m.tipo==='ingreso'?'+':'-'}${fmtUSD(m.monto)}</td>
+      <td>
+        <div class="action-bar">
+          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick='realizarMovimiento("${m.id}")'>✓ Realizar</button>
+          <button class="icon-btn" title="Eliminar" onclick='deleteMovimiento("${m.id}")'>✕</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// =============================================
+// MODAL
+// =============================================
+
+function openModal(mode) {
+  modalMode = mode;
+  const isProyectado = mode.startsWith('futuro');
+  const isEgreso = mode.includes('egreso');
+
+  document.getElementById('editId').value = '';
+  document.getElementById('modalTitle').textContent = isProyectado
+    ? (isEgreso ? 'Nuevo Pago Futuro' : 'Nuevo Cobro Futuro')
+    : (isEgreso ? 'Registrar Gasto' : 'Registrar Cobro');
+
+  document.getElementById('proyectadoGroup').style.display = isProyectado ? 'block' : 'none';
+  document.getElementById('fEstado').value = isProyectado ? 'proyectado' : 'realizado';
+
+  // Set tipo
+  if (isEgreso) {
+    document.getElementById('tipoEgreso').checked = true;
+  } else {
+    document.getElementById('tipoIngreso').checked = true;
+  }
+  updateCatOptions();
+
+  // Set today's date
+  document.getElementById('fFecha').value = new Date().toISOString().slice(0,10);
+  document.getElementById('fDesc').value = '';
+  document.getElementById('fMonto').value = '';
+  document.getElementById('fCliente').value = '';
+  document.getElementById('fNotas').value = '';
+  document.getElementById('fProducto').value = '';
+
+  document.getElementById('tipoIngreso').addEventListener('change', updateCatOptions);
+  document.getElementById('tipoEgreso').addEventListener('change', updateCatOptions);
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function updateCatOptions() {
+  const isEgreso = document.getElementById('tipoEgreso').checked;
+  const cats = isEgreso ? CATEGORIAS_EGRESO : CATEGORIAS_INGRESO;
+  document.getElementById('fCat').innerHTML = '<option value="">— seleccioná —</option>' +
+    cats.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function editarMovimiento(id) {
+  const m = MOVIMIENTOS.find(x => x.id === id);
+  if (!m) return;
+  openModal(m.tipo);
+  document.getElementById('editId').value = m.id;
+  document.getElementById('tipoIngreso').checked = m.tipo === 'ingreso';
+  document.getElementById('tipoEgreso').checked = m.tipo === 'egreso';
+  updateCatOptions();
+  document.getElementById('fDesc').value = m.descripcion || '';
+  document.getElementById('fCat').value = m.categoria || '';
+  document.getElementById('fMonto').value = m.monto || '';
+  document.getElementById('fFecha').value = m.fecha || '';
+  document.getElementById('fProducto').value = m.producto || '';
+  document.getElementById('fCliente').value = m.cliente || '';
+  document.getElementById('fNotas').value = m.notas || '';
+  document.getElementById('proyectadoGroup').style.display = 'block';
+  document.getElementById('fEstado').value = m.estado || 'realizado';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+async function guardarMovimiento() {
+  const tipo = document.querySelector('input[name="tipo"]:checked').value;
+  const desc = document.getElementById('fDesc').value.trim();
+  const cat = document.getElementById('fCat').value;
+  const monto = parseFloat(document.getElementById('fMonto').value);
+  const fecha = document.getElementById('fFecha').value;
+  const producto = document.getElementById('fProducto').value;
+  const cliente = document.getElementById('fCliente').value.trim();
+  const notas = document.getElementById('fNotas').value.trim();
+  const estado = document.getElementById('fEstado').value || 'realizado';
+  const editId = document.getElementById('editId').value;
+
+  if (!desc || !monto || !fecha) { alert('Completá descripción, monto y fecha.'); return; }
+  if (isNaN(monto) || monto <= 0) { alert('Monto inválido.'); return; }
+
+  const mov = { tipo, descripcion:desc, categoria:cat, monto, fecha, producto, cliente, notas, estado };
+  if (editId) mov.id = editId;
+
+  const ok = await saveMovimiento(mov);
+  if (ok) {
+    closeModal();
+    await refreshAll();
+  }
+}
+
+// =============================================
+// NAVIGATION & REFRESH
+// =============================================
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes(name)) {
+      n.classList.add('active');
+    }
+  });
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'caja') renderCaja();
+  if (name === 'pnl') renderPnl();
+  if (name === 'movimientos') renderMovimientos();
+  if (name === 'proyectados') renderProyectados();
+  if (name === 'periodicos') renderPeriodicos();
+}
+
+async function refreshAll() {
+  await loadData();
+  const activePage = document.querySelector('.page.active');
+  if (activePage) {
+    const name = activePage.id.replace('page-','');
+    showPage(name);
+  }
+}
+
+// =============================================
+// SQL SCHEMA
+// =============================================
+
+const SQL = `-- Winix Admin Financiero — Schema
+-- Ejecutar en Supabase SQL Editor
+
+create table if not exists movimientos (
+  id uuid primary key default gen_random_uuid(),
+  tipo text not null check (tipo in ('ingreso','egreso')),
+  descripcion text not null,
+  categoria text,
+  monto numeric(12,2) not null check (monto >= 0),
+  fecha date not null,
+  producto text check (producto in ('winix20','build','ambos') or producto is null),
+  cliente text,
+  notas text,
+  estado text not null default 'realizado'
+    check (estado in ('realizado','proyectado')),
+  created_at timestamptz default now()
+);
+
+create table if not exists periodicos (
+  id uuid primary key default gen_random_uuid(),
+  tipo text not null check (tipo in ('ingreso','egreso')),
+  descripcion text not null,
+  categoria text,
+  monto numeric(12,2) not null check (monto >= 0),
+  frecuencia text not null default 'mensual'
+    check (frecuencia in ('mensual','bimestral','trimestral','semestral','anual','semanal','quincenal')),
+  dia integer check (dia between 1 and 31),
+  desde date not null,
+  hasta date,
+  producto text check (producto in ('winix20','build','ambos') or producto is null),
+  cliente text,
+  notas text,
+  activo boolean not null default true,
+  created_at timestamptz default now()
+);
+
+-- Índices
+create index if not exists idx_mov_fecha on movimientos(fecha desc);
+create index if not exists idx_mov_tipo on movimientos(tipo);
+create index if not exists idx_mov_estado on movimientos(estado);
+create index if not exists idx_per_activo on periodicos(activo);
+create index if not exists idx_per_tipo on periodicos(tipo);
+
+-- Deshabilitar RLS para uso personal
+alter table movimientos disable row level security;
+alter table periodicos disable row level security;
+
+-- Verificar
+select 'movimientos' as tabla, count(*) from movimientos
+union all
+select 'periodicos', count(*) from periodicos;`;
+
+function copySql() {
+  navigator.clipboard.writeText(SQL).then(() => alert('SQL copiado al portapapeles'));
+}
+
+// =============================================
+// INIT
+// =============================================
+
+async function init() {
+  document.getElementById('sqlSchema').textContent = SQL;
+  await loadData();
+  renderDashboard();
+  document.getElementById('tipoIngreso').addEventListener('change', updateCatOptions);
+  document.getElementById('tipoEgreso').addEventListener('change', updateCatOptions);
+}
+
+loadConfig();
+window.addEventListener('DOMContentLoaded', init);
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.getElementById('modalPeriodicoOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModalPeriodico();
+});
+
+document.getElementById('pTipoIngreso').addEventListener('change', updatePCatOptions);
+document.getElementById('pTipoEgreso').addEventListener('change', updatePCatOptions);
+</script>
+</body>
+</html>
