@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0063)file:///C:/Users/federico_kosoy/Downloads/winix-caja%20(2).html -->
-<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="es">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Winix — Caja &amp; Finanzas</title>
-<link href="./index_files/css2" rel="stylesheet">
-<script src="./index_files/chart.umd.js.descarga"></script>
+<title>Winix — Caja & Finanzas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -578,41 +578,41 @@
     </div>
     <nav>
       <div class="nav-section-label">Dashboard</div>
-      <div class="nav-item" onclick="showPage(&#39;dashboard&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"></rect><rect x="9" y="1" width="6" height="6" rx="1"></rect><rect x="1" y="9" width="6" height="6" rx="1"></rect><rect x="9" y="9" width="6" height="6" rx="1"></rect></svg>
+      <div class="nav-item active" onclick="showPage('dashboard')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
         Resumen
       </div>
-      <div class="nav-item" onclick="showPage(&#39;caja&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v1H2V4zm0 3h12v5a1 1 0 01-1 1H3a1 1 0 01-1-1V7zm4 2a1 1 0 000 2h4a1 1 0 000-2H6z"></path></svg>
+      <div class="nav-item" onclick="showPage('caja')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v1H2V4zm0 3h12v5a1 1 0 01-1 1H3a1 1 0 01-1-1V7zm4 2a1 1 0 000 2h4a1 1 0 000-2H6z"/></svg>
         Caja
       </div>
-      <div class="nav-item active" onclick="showPage(&#39;pnl&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 11L5 7l3 3 4-5 3 3V14H1v-3z"></path><path d="M1 1h14v2H1z"></path></svg>
+      <div class="nav-item" onclick="showPage('pnl')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 11L5 7l3 3 4-5 3 3V14H1v-3z"/><path d="M1 1h14v2H1z"/></svg>
         PnL Proyectado
       </div>
       <div class="nav-section-label">Registros</div>
-      <div class="nav-item" onclick="showPage(&#39;movimientos&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M14 2H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1zM2 12V5h12v7H2z"></path><path d="M4 7h8v1H4zm0 2h5v1H4z"></path></svg>
+      <div class="nav-item" onclick="showPage('movimientos')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M14 2H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1zM2 12V5h12v7H2z"/><path d="M4 7h8v1H4zm0 2h5v1H4z"/></svg>
         Movimientos
       </div>
-      <div class="nav-item" onclick="showPage(&#39;proyectados&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM8 3v5l3 3-1 1-3.5-3.5V3H8z"></path></svg>
+      <div class="nav-item" onclick="showPage('proyectados')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM8 3v5l3 3-1 1-3.5-3.5V3H8z"/></svg>
         Futuros / Proyectados
       </div>
-      <div class="nav-item" onclick="showPage(&#39;periodicos&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 1a6 6 0 110 12A6 6 0 018 2z"></path><path d="M7.5 4v4.5l3 1.5.5-.87-2.5-1.25V4z"></path><circle cx="3" cy="8" r="1"></circle><circle cx="13" cy="8" r="1"></circle><circle cx="8" cy="3" r="1"></circle></svg>
+      <div class="nav-item" onclick="showPage('periodicos')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 1a6 6 0 110 12A6 6 0 018 2z"/><path d="M7.5 4v4.5l3 1.5.5-.87-2.5-1.25V4z"/><circle cx="3" cy="8" r="1"/><circle cx="13" cy="8" r="1"/><circle cx="8" cy="3" r="1"/></svg>
         Periódicos
       </div>
       <div class="nav-section-label">Sistema</div>
-      <div class="nav-item" onclick="showPage(&#39;config&#39;)">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 5a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4z"></path><path d="M8 0a1 1 0 01.97.758l.3 1.182a5.98 5.98 0 011.3.756l1.14-.456a1 1 0 011.273.475l.5.866a1 1 0 01-.232 1.255l-.935.747a6.09 6.09 0 010 1.514l.935.747a1 1 0 01.232 1.255l-.5.866a1 1 0 01-1.273.475l-1.14-.456a5.98 5.98 0 01-1.3.756l-.3 1.182A1 1 0 018 16a1 1 0 01-.97-.758l-.3-1.182a5.98 5.98 0 01-1.3-.756l-1.14.456a1 1 0 01-1.273-.475l-.5-.866a1 1 0 01.232-1.255l.935-.747a6.09 6.09 0 010-1.514l-.935-.747a1 1 0 01-.232-1.255l.5-.866A1 1 0 013.73 6.242l1.14.456a5.98 5.98 0 011.3-.756l.3-1.182A1 1 0 018 0z"></path></svg>
+      <div class="nav-item" onclick="showPage('config')">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 5a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4z"/><path d="M8 0a1 1 0 01.97.758l.3 1.182a5.98 5.98 0 011.3.756l1.14-.456a1 1 0 011.273.475l.5.866a1 1 0 01-.232 1.255l-.935.747a6.09 6.09 0 010 1.514l.935.747a1 1 0 01.232 1.255l-.5.866a1 1 0 01-1.273.475l-1.14-.456a5.98 5.98 0 01-1.3.756l-.3 1.182A1 1 0 018 16a1 1 0 01-.97-.758l-.3-1.182a5.98 5.98 0 01-1.3-.756l-1.14.456a1 1 0 01-1.273-.475l-.5-.866a1 1 0 01.232-1.255l.935-.747a6.09 6.09 0 010-1.514l-.935-.747a1 1 0 01-.232-1.255l.5-.866A1 1 0 013.73 6.242l1.14.456a5.98 5.98 0 011.3-.756l.3-1.182A1 1 0 018 0z"/></svg>
         Configuración
       </div>
     </nav>
     <div class="sidebar-footer">
       <div class="connection-status">
-        <div class="status-dot connected" id="connStatus"></div>
-        <span id="connLabel" style="color:rgba(255,255,255,0.4)">Supabase OK</span>
+        <div class="status-dot" id="connStatus"></div>
+        <span id="connLabel" style="color:rgba(255,255,255,0.4)">Sin conexión</span>
       </div>
     </div>
   </aside>
@@ -621,37 +621,37 @@
   <main class="main">
 
     <!-- ====== PAGE: DASHBOARD ====== -->
-    <div id="page-dashboard" class="page">
+    <div id="page-dashboard" class="page active">
       <div class="topbar">
         <div>
           <div class="page-title">Resumen Financiero</div>
-          <div class="page-subtitle" id="dashSubtitle">mayo de 2026</div>
+          <div class="page-subtitle" id="dashSubtitle">cargando...</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModal(&#39;ingreso&#39;)">+ Cobro</button>
-          <button class="btn btn-ghost" onclick="openModal(&#39;egreso&#39;)">+ Gasto</button>
+          <button class="btn btn-primary" onclick="openModal('ingreso')">+ Cobro</button>
+          <button class="btn btn-ghost" onclick="openModal('egreso')">+ Gasto</button>
         </div>
       </div>
       <div class="content">
         <div class="metrics-grid">
           <div class="metric-card accent-orange">
             <div class="metric-label">Saldo en Caja</div>
-            <div class="metric-value positive" id="m-saldo">USD 0</div>
-            <div class="metric-delta neutral" id="m-saldo-delta">saldo acumulado histórico</div>
+            <div class="metric-value" id="m-saldo">—</div>
+            <div class="metric-delta neutral" id="m-saldo-delta">—</div>
           </div>
           <div class="metric-card accent-green">
             <div class="metric-label">Ingresos del Mes</div>
-            <div class="metric-value positive" id="m-ingresos">USD 0</div>
+            <div class="metric-value positive" id="m-ingresos">—</div>
             <div class="metric-delta" id="m-ingresos-delta">—</div>
           </div>
           <div class="metric-card accent-red">
             <div class="metric-label">Egresos del Mes</div>
-            <div class="metric-value negative" id="m-egresos">USD 0</div>
+            <div class="metric-value negative" id="m-egresos">—</div>
             <div class="metric-delta" id="m-egresos-delta">—</div>
           </div>
           <div class="metric-card accent-navy">
             <div class="metric-label">Resultado Neto</div>
-            <div class="metric-value positive" id="m-neto">USD 0</div>
+            <div class="metric-value" id="m-neto">—</div>
             <div class="metric-delta neutral" id="m-neto-delta">— del mes</div>
           </div>
         </div>
@@ -662,7 +662,7 @@
               <div class="panel-title">Flujo Mensual (últimos 6 meses)</div>
             </div>
             <div class="chart-wrap">
-              <canvas id="chartFlujo" role="img" aria-label="Gráfico de ingresos y egresos mensuales" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;">Flujo de caja mensual.</canvas>
+              <canvas id="chartFlujo" role="img" aria-label="Gráfico de ingresos y egresos mensuales">Flujo de caja mensual.</canvas>
             </div>
           </div>
           <div class="panel">
@@ -678,7 +678,7 @@
         <div class="panel-full">
           <div class="panel-header">
             <div class="panel-title">Últimos movimientos</div>
-            <span class="panel-action" onclick="showPage(&#39;movimientos&#39;)">ver todos →</span>
+            <span class="panel-action" onclick="showPage('movimientos')">ver todos →</span>
           </div>
           <table class="data-table" id="tbl-recientes">
             <thead>
@@ -690,7 +690,9 @@
                 <th style="text-align:right">Monto</th>
               </tr>
             </thead>
-            <tbody id="tbody-recientes"><tr><td colspan="5" class="empty-state"><div class="empty-state-icon">📋</div>No hay movimientos registrados</td></tr></tbody>
+            <tbody id="tbody-recientes">
+              <tr><td colspan="5" class="empty-state">Cargando...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -704,23 +706,23 @@
           <div class="page-subtitle">saldo histórico acumulado</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModal(&#39;ingreso&#39;)">+ Cobro</button>
-          <button class="btn btn-ghost" onclick="openModal(&#39;egreso&#39;)">+ Gasto</button>
+          <button class="btn btn-primary" onclick="openModal('ingreso')">+ Cobro</button>
+          <button class="btn btn-ghost" onclick="openModal('egreso')">+ Gasto</button>
         </div>
       </div>
       <div class="content">
         <div class="metrics-grid" style="grid-template-columns: repeat(3,1fr)">
           <div class="metric-card accent-orange">
             <div class="metric-label">Saldo Actual</div>
-            <div class="metric-value positive" id="caja-saldo">USD 1.000</div>
+            <div class="metric-value" id="caja-saldo">—</div>
           </div>
           <div class="metric-card accent-green">
             <div class="metric-label">Total Ingresos Histórico</div>
-            <div class="metric-value positive" id="caja-ing-total">USD 8.000</div>
+            <div class="metric-value positive" id="caja-ing-total">—</div>
           </div>
           <div class="metric-card accent-red">
             <div class="metric-label">Total Egresos Histórico</div>
-            <div class="metric-value negative" id="caja-eg-total">USD 7.000</div>
+            <div class="metric-value negative" id="caja-eg-total">—</div>
           </div>
         </div>
         <div class="panel-full">
@@ -728,14 +730,14 @@
             <div class="panel-title">Evolución de Caja</div>
           </div>
           <div style="padding:20px; position:relative; height:260px;">
-            <canvas id="chartCaja" role="img" aria-label="Evolución histórica del saldo de caja" width="0" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;">Saldo acumulado.</canvas>
+            <canvas id="chartCaja" role="img" aria-label="Evolución histórica del saldo de caja">Saldo acumulado.</canvas>
           </div>
         </div>
       </div>
     </div>
 
     <!-- ====== PAGE: PNL ====== -->
-    <div id="page-pnl" class="page active">
+    <div id="page-pnl" class="page">
       <div class="topbar">
         <div>
           <div class="page-title">PnL Proyectado</div>
@@ -744,7 +746,7 @@
         <div class="topbar-right">
           <div class="month-nav">
             <button class="month-btn" onclick="changePnlMonths(-1)">‹</button>
-            <span id="pnlMonthLabel">12 meses</span>
+            <span id="pnlMonthLabel">6 meses</span>
             <button class="month-btn" onclick="changePnlMonths(1)">›</button>
           </div>
           <button class="btn btn-secondary" onclick="renderPnl()">↻ Actualizar</button>
@@ -758,8 +760,8 @@
           </div>
           <div style="overflow-x:auto">
             <table class="pnl-table" id="pnlTable">
-              <thead id="pnlHead"><tr><th style="width:200px">Concepto</th><th style="min-width:90px">May 26</th><th style="min-width:90px">Jun 26</th><th style="min-width:90px">Jul 26</th><th style="min-width:90px">Ago 26</th><th style="min-width:90px">Sep 26</th><th style="min-width:90px">Oct 26</th><th style="min-width:90px">Nov 26</th><th style="min-width:90px">Dic 26</th><th style="min-width:90px">Ene 27</th><th style="min-width:90px">Feb 27</th><th style="min-width:90px">Mar 27</th><th style="min-width:90px">Abr 27</th><th>Total</th></tr></thead>
-              <tbody id="pnlBody"><tr class="section-header"><td colspan="14">INGRESOS</td></tr><tr class=""><td>Desarrollo</td><td>USD 8.000</td><td style="opacity: 0.6;">USD 6.000</td><td style="opacity: 0.6;">USD 6.000</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td>USD 20.000</td></tr><tr class=""><td>Membresía Winix 2.0</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="opacity: 0.6;">USD 2.000</td><td style="opacity: 0.6;">USD 2.000</td><td style="opacity: 0.6;">USD 2.000</td><td style="opacity: 0.6;">USD 2.000</td><td>USD 8.000</td></tr><tr class=""><td>Membresía Winix Build</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--text-muted)">—</td></tr><tr class=""><td>Otros Ingresos</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--text-muted)">—</td></tr><tr class="total-row"><td>Total Ingresos</td><td>USD 8.000</td><td style="opacity: 0.6;">USD 6.000</td><td style="opacity: 0.6;">USD 6.000</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="opacity: 0.6;">USD 2.000</td><td style="opacity: 0.6;">USD 2.000</td><td style="opacity: 0.6;">USD 2.000</td><td style="opacity: 0.6;">USD 2.000</td><td>USD 28.000</td></tr><tr class="section-header"><td colspan="14">EGRESOS</td></tr><tr class=""><td>Costo Desarrollo (Mateo)</td><td style="color:var(--red)">USD 7.000</td><td style="color: var(--red); opacity: 0.6;">USD 3.000</td><td style="color: var(--red); opacity: 0.6;">USD 2.250</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--red)">USD 12.250</td></tr><tr class=""><td>Consultoría</td><td style="color:var(--red)">USD 2.750</td><td style="color: var(--red); opacity: 0.6;">USD 2.750</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--red)">USD 5.500</td></tr><tr class=""><td>Legales</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--text-muted)">—</td></tr><tr class=""><td>Mantenimiento Cliente</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--text-muted)">—</td></tr><tr class=""><td>Infraestructura</td><td style="color:var(--text-muted)">—</td><td style="color: var(--red); opacity: 0.6;">USD 300</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color:var(--red)">USD 3.800</td></tr><tr class=""><td>Marketing</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--text-muted)">—</td></tr><tr class=""><td>Otros Egresos</td><td style="color:var(--text-muted)">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color: var(--text-muted); opacity: 0.6;">—</td><td style="color:var(--text-muted)">—</td></tr><tr class="total-row"><td>Total Egresos</td><td style="color:var(--red)">USD 9.750</td><td style="color: var(--red); opacity: 0.6;">USD 6.050</td><td style="color: var(--red); opacity: 0.6;">USD 2.600</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color: var(--red); opacity: 0.6;">USD 350</td><td style="color:var(--red)">USD 21.550</td></tr><tr class="section-header"><td colspan="14">RESULTADO</td></tr><tr class="net-row"><td>Resultado Neto</td><td style="color:var(--red)">−USD 1.750</td><td style="color: var(--red); opacity: 0.6;">−USD 50</td><td style="color: var(--green); opacity: 0.6;">USD 3.400</td><td style="color: var(--red); opacity: 0.6;">−USD 350</td><td style="color: var(--red); opacity: 0.6;">−USD 350</td><td style="color: var(--red); opacity: 0.6;">−USD 350</td><td style="color: var(--red); opacity: 0.6;">−USD 350</td><td style="color: var(--red); opacity: 0.6;">−USD 350</td><td style="color: var(--green); opacity: 0.6;">USD 1.650</td><td style="color: var(--green); opacity: 0.6;">USD 1.650</td><td style="color: var(--green); opacity: 0.6;">USD 1.650</td><td style="color: var(--green); opacity: 0.6;">USD 1.650</td><td style="color:var(--green)">USD 6.450</td></tr></tbody>
+              <thead id="pnlHead"></thead>
+              <tbody id="pnlBody"></tbody>
             </table>
           </div>
         </div>
@@ -774,8 +776,8 @@
           <div class="page-subtitle">cobros y gastos realizados</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModal(&#39;ingreso&#39;)">+ Cobro</button>
-          <button class="btn btn-ghost" onclick="openModal(&#39;egreso&#39;)">+ Gasto</button>
+          <button class="btn btn-primary" onclick="openModal('ingreso')">+ Cobro</button>
+          <button class="btn btn-ghost" onclick="openModal('egreso')">+ Gasto</button>
         </div>
       </div>
       <div class="content">
@@ -785,8 +787,12 @@
             <option value="ingreso">Ingresos</option>
             <option value="egreso">Egresos</option>
           </select>
-          <select class="filter-select" id="filtroCategoria" onchange="renderMovimientos()"><option value="">Todas las categorías</option><option value="Consultoría">Consultoría</option><option value="Costo Desarrollo (Mateo)">Costo Desarrollo (Mateo)</option><option value="Desarrollo">Desarrollo</option></select>
-          <select class="filter-select" id="filtroMes" onchange="renderMovimientos()"><option value="">Todos los meses</option><option value="2026-05">May 26</option></select>
+          <select class="filter-select" id="filtroCategoria" onchange="renderMovimientos()">
+            <option value="">Todas las categorías</option>
+          </select>
+          <select class="filter-select" id="filtroMes" onchange="renderMovimientos()">
+            <option value="">Todos los meses</option>
+          </select>
         </div>
         <div class="panel-full">
           <table class="data-table">
@@ -802,69 +808,8 @@
               </tr>
             </thead>
             <tbody id="tbody-movimientos">
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/05/2026</td>
-      <td>
-        <div style="font-size:13px">Módulo Ingresos + Módulo Egresos - Operativo</div>
-        
-      </td>
-      <td><span class="badge badge-dev">Desarrollo</span></td>
-      <td>
-        <span class="badge badge-winix20">winix20</span>
-        <span style="font-size:12px;color:var(--text-muted);margin-left:4px">QH</span>
-      </td>
-      <td><span class="badge badge-ingreso">Ingreso</span></td>
-      <td style="text-align:right" class="amount-positive">+USD 8.000</td>
-      <td>
-        <div class="action-bar">
-          <button class="icon-btn" title="Editar" onclick="editarMovimiento(&quot;25cd15df-b6ef-4522-b9db-1f618c7afdf1&quot;)">✏</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;25cd15df-b6ef-4522-b9db-1f618c7afdf1&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/05/2026</td>
-      <td>
-        <div style="font-size:13px">Módulo Ingresos + Módulo Egresos - Operativo</div>
-        
-      </td>
-      <td><span class="badge badge-dev">Costo Desarrollo (Mateo)</span></td>
-      <td>
-        <span class="badge badge-winix20">winix20</span>
-        <span style="font-size:12px;color:var(--text-muted);margin-left:4px">QH</span>
-      </td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 7.000</td>
-      <td>
-        <div class="action-bar">
-          <button class="icon-btn" title="Editar" onclick="editarMovimiento(&quot;7eec8bb7-58c5-4823-9e2b-496035fcd273&quot;)">✏</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;7eec8bb7-58c5-4823-9e2b-496035fcd273&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/05/2026</td>
-      <td>
-        <div style="font-size:13px">Luciana + Paula</div>
-        
-      </td>
-      <td><span class="badge badge-dev">Consultoría</span></td>
-      <td>
-        <span class="badge badge-build">ambos</span>
-        
-      </td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 2.750</td>
-      <td>
-        <div class="action-bar">
-          <button class="icon-btn" title="Editar" onclick="editarMovimiento(&quot;2549e2f8-91a0-4aad-8354-b9c7063f6d8d&quot;)">✏</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;2549e2f8-91a0-4aad-8354-b9c7063f6d8d&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
+              <tr><td colspan="7" class="empty-state">Cargando...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -874,12 +819,12 @@
     <div id="page-proyectados" class="page">
       <div class="topbar">
         <div>
-          <div class="page-title">Futuros &amp; Proyectados</div>
+          <div class="page-title">Futuros & Proyectados</div>
           <div class="page-subtitle">pagos y cobros esperados</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModal(&#39;futuro-ingreso&#39;)">+ Cobro Futuro</button>
-          <button class="btn btn-ghost" onclick="openModal(&#39;futuro-egreso&#39;)">+ Pago Futuro</button>
+          <button class="btn btn-primary" onclick="openModal('futuro-ingreso')">+ Cobro Futuro</button>
+          <button class="btn btn-ghost" onclick="openModal('futuro-egreso')">+ Pago Futuro</button>
         </div>
       </div>
       <div class="content">
@@ -898,126 +843,8 @@
               </tr>
             </thead>
             <tbody id="tbody-proyectados">
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/06/2026</td>
-      <td>Proyecto BIND</td>
-      <td><span class="badge badge-dev">Desarrollo</span></td>
-      <td><span class="badge badge-ingreso">Ingreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-positive">+USD 6.000</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;91c0ac83-0139-48ff-9f24-491b4975036e&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;91c0ac83-0139-48ff-9f24-491b4975036e&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/06/2026</td>
-      <td>Módulo Egresos - No operativo</td>
-      <td><span class="badge badge-dev">Costo Desarrollo (Mateo)</span></td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 1.500</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;acd87bec-2833-4772-9be3-6475b03992bf&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;acd87bec-2833-4772-9be3-6475b03992bf&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/06/2026</td>
-      <td>Proyecto BIND</td>
-      <td><span class="badge badge-dev">Costo Desarrollo (Mateo)</span></td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 1.500</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;518af7c9-a977-4612-858f-bde8eed5df86&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;518af7c9-a977-4612-858f-bde8eed5df86&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/06/2026</td>
-      <td>Mantenimiento</td>
-      <td><span class="badge badge-dev">Infraestructura</span></td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 300</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;f3d4201b-4d54-4df4-8a78-6ec48a3cfd04&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;f3d4201b-4d54-4df4-8a78-6ec48a3cfd04&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/06/2026</td>
-      <td>Luciana + Paula</td>
-      <td><span class="badge badge-dev">Consultoría</span></td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 2.750</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;84ef4ee1-906a-403a-8e3c-4bd69ec0f126&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;84ef4ee1-906a-403a-8e3c-4bd69ec0f126&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/07/2026</td>
-      <td>Módulo Egresos - No Operativo</td>
-      <td><span class="badge badge-dev">Desarrollo</span></td>
-      <td><span class="badge badge-ingreso">Ingreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-positive">+USD 6.000</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;bb6f1e77-0019-404e-8405-f9b91c198647&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;bb6f1e77-0019-404e-8405-f9b91c198647&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/07/2026</td>
-      <td>Proyecto BIND</td>
-      <td><span class="badge badge-dev">Costo Desarrollo (Mateo)</span></td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 750</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;96c9d289-5880-4cb1-93b6-18d9211f51d3&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;96c9d289-5880-4cb1-93b6-18d9211f51d3&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  
-    <tr>
-      <td style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">05/07/2026</td>
-      <td>Módulo Egresos - No Operativo</td>
-      <td><span class="badge badge-dev">Costo Desarrollo (Mateo)</span></td>
-      <td><span class="badge badge-egreso">Egreso</span></td>
-      <td><span class="badge badge-pendiente">Proyectado</span></td>
-      <td style="text-align:right" class="amount-negative">-USD 1.500</td>
-      <td>
-        <div class="action-bar">
-          <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="realizarMovimiento(&quot;f5cb8de4-3437-4e53-b7e7-8efae6c33516&quot;)">✓ Realizar</button>
-          <button class="icon-btn" title="Eliminar" onclick="deleteMovimiento(&quot;f5cb8de4-3437-4e53-b7e7-8efae6c33516&quot;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
+              <tr><td colspan="7" class="empty-state">Cargando...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -1027,12 +854,12 @@
     <div id="page-periodicos" class="page">
       <div class="topbar">
         <div>
-          <div class="page-title">Cobros &amp; Pagos Periódicos</div>
+          <div class="page-title">Cobros & Pagos Periódicos</div>
           <div class="page-subtitle">reglas de recurrencia automática</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModalPeriodico(&#39;ingreso&#39;)">+ Cobro Periódico</button>
-          <button class="btn btn-ghost" onclick="openModalPeriodico(&#39;egreso&#39;)">+ Pago Periódico</button>
+          <button class="btn btn-primary" onclick="openModalPeriodico('ingreso')">+ Cobro Periódico</button>
+          <button class="btn btn-ghost" onclick="openModalPeriodico('egreso')">+ Pago Periódico</button>
         </div>
       </div>
       <div class="content">
@@ -1041,23 +868,23 @@
         <div class="metrics-grid" style="grid-template-columns: repeat(4,1fr); margin-bottom:20px">
           <div class="metric-card accent-green">
             <div class="metric-label">Cobros Activos</div>
-            <div class="metric-value" id="per-cobros-activos">1</div>
-            <div class="metric-delta neutral" id="per-cobros-monto">~USD 2.000/mes</div>
+            <div class="metric-value" id="per-cobros-activos">—</div>
+            <div class="metric-delta neutral" id="per-cobros-monto">—</div>
           </div>
           <div class="metric-card accent-red">
             <div class="metric-label">Pagos Activos</div>
-            <div class="metric-value" id="per-pagos-activos">1</div>
-            <div class="metric-delta neutral" id="per-pagos-monto">~USD 350/mes</div>
+            <div class="metric-value" id="per-pagos-activos">—</div>
+            <div class="metric-delta neutral" id="per-pagos-monto">—</div>
           </div>
           <div class="metric-card accent-orange">
             <div class="metric-label">Flujo Neto Mensual</div>
-            <div class="metric-value positive" id="per-neto-mensual">USD 1.650</div>
+            <div class="metric-value" id="per-neto-mensual">—</div>
             <div class="metric-delta neutral">estimado mensual</div>
           </div>
           <div class="metric-card accent-navy">
             <div class="metric-label">Reglas Totales</div>
-            <div class="metric-value" id="per-total">2</div>
-            <div class="metric-delta neutral" id="per-inactivos">todas activas</div>
+            <div class="metric-value" id="per-total">—</div>
+            <div class="metric-delta neutral" id="per-inactivos">—</div>
           </div>
         </div>
 
@@ -1081,34 +908,8 @@
               </tr>
             </thead>
             <tbody id="tbody-per-ingresos">
-    <tr style="">
-      <td>
-        <div style="font-size:13px;font-weight:500">Suscripción</div>
-        
-      </td>
-      <td><span class="badge badge-dev">Membresía Winix 2.0</span></td>
-      <td><span class="badge badge-recurrente">mensual</span></td>
-      <td style="font-family:var(--mono);font-size:12px">día 5</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">05/01/2027</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">05/12/2029</td>
-      <td>
-        <span class="badge badge-winix20">winix20</span> 
-        <span style="font-size:12px;color:var(--text-muted)">QH</span>
-      </td>
-      <td>
-        <span class="badge badge-activo" style="cursor:pointer" onclick="togglePeriodico(&#39;396c320d-09d2-4d56-88b1-7194164fd75a&#39;)" title="Click para pausar/activar">
-          Activo
-        </span>
-      </td>
-      <td style="text-align:right" class="amount-positive">USD 2.000</td>
-      <td>
-        <div class="action-bar">
-          <button class="icon-btn" title="Editar" onclick="editarPeriodico(&#39;396c320d-09d2-4d56-88b1-7194164fd75a&#39;)">✏</button>
-          <button class="icon-btn" title="Eliminar" onclick="deletePeriodico(&#39;396c320d-09d2-4d56-88b1-7194164fd75a&#39;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
+              <tr><td colspan="10" class="empty-state">Sin reglas de ingreso</td></tr>
+            </tbody>
           </table>
         </div>
 
@@ -1132,34 +933,8 @@
               </tr>
             </thead>
             <tbody id="tbody-per-egresos">
-    <tr style="">
-      <td>
-        <div style="font-size:13px;font-weight:500">Mantenimiento</div>
-        
-      </td>
-      <td><span class="badge badge-dev">Infraestructura</span></td>
-      <td><span class="badge badge-recurrente">mensual</span></td>
-      <td style="font-family:var(--mono);font-size:12px">día 5</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">05/07/2026</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">05/12/2029</td>
-      <td>
-        <span class="badge badge-winix20">winix20</span> 
-        <span style="font-size:12px;color:var(--text-muted)">QH</span>
-      </td>
-      <td>
-        <span class="badge badge-activo" style="cursor:pointer" onclick="togglePeriodico(&#39;82641f7b-9651-48ee-b186-8f5e3d7ae1d8&#39;)" title="Click para pausar/activar">
-          Activo
-        </span>
-      </td>
-      <td style="text-align:right" class="amount-negative">USD 350</td>
-      <td>
-        <div class="action-bar">
-          <button class="icon-btn" title="Editar" onclick="editarPeriodico(&#39;82641f7b-9651-48ee-b186-8f5e3d7ae1d8&#39;)">✏</button>
-          <button class="icon-btn" title="Eliminar" onclick="deletePeriodico(&#39;82641f7b-9651-48ee-b186-8f5e3d7ae1d8&#39;)">✕</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
+              <tr><td colspan="10" class="empty-state">Sin reglas de egreso</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -1177,21 +952,21 @@
         <div class="config-section">
           <div class="config-section-title">Conexión Supabase</div>
           <div class="config-section-desc">Los datos se guardan en tu proyecto Supabase. Ingresá la URL y la anon key.</div>
-          <div id="connAlert" class="alert alert-success">✓ Conectado a Supabase correctamente.</div>
+          <div id="connAlert" class="alert alert-warning">⚠ Sin conexión. Ingresá las credenciales de Supabase para persistir datos.</div>
           <div class="form-group">
             <label class="form-label">Supabase URL</label>
-            <input type="text" class="form-control" id="cfgUrl" placeholder="https://xxxx.supabase.co">
+            <input type="text" class="form-control" id="cfgUrl" placeholder="https://xxxx.supabase.co" />
           </div>
           <div class="form-group">
             <label class="form-label">Anon Key</label>
-            <input type="text" class="form-control" id="cfgKey" placeholder="eyJhbGci...">
+            <input type="text" class="form-control" id="cfgKey" placeholder="eyJhbGci..." />
             <div class="form-hint">Usá la anon/public key. Se guarda solo en tu browser (localStorage).</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center">
             <button class="btn btn-primary" onclick="saveConfig()">Guardar y Conectar</button>
             <div class="connection-status">
-              <div class="status-dot connected" id="configStatusDot"></div>
-              <span id="configStatusLabel" style="font-size:12px;color:var(--text-muted)">Supabase OK</span>
+              <div class="status-dot" id="configStatusDot"></div>
+              <span id="configStatusLabel" style="font-size:12px;color:var(--text-muted)">—</span>
             </div>
           </div>
         </div>
@@ -1200,57 +975,7 @@
           <div class="config-section-title">Schema SQL — Crear tablas</div>
           <div class="config-section-desc">Ejecutá este SQL en el editor de Supabase (SQL Editor → New query) para crear las tablas necesarias.</div>
           <div style="background:var(--navy-dark);border-radius:8px;padding:16px;overflow-x:auto">
-            <pre style="font-family:var(--mono);font-size:11px;color:#A8D8A8;white-space:pre;line-height:1.6" id="sqlSchema">-- Winix Admin Financiero — Schema
--- Ejecutar en Supabase SQL Editor
-
-create table if not exists movimientos (
-  id uuid primary key default gen_random_uuid(),
-  tipo text not null check (tipo in ('ingreso','egreso')),
-  descripcion text not null,
-  categoria text,
-  monto numeric(12,2) not null check (monto &gt;= 0),
-  fecha date not null,
-  producto text check (producto in ('winix20','build','ambos') or producto is null),
-  cliente text,
-  notas text,
-  estado text not null default 'realizado'
-    check (estado in ('realizado','proyectado')),
-  created_at timestamptz default now()
-);
-
-create table if not exists periodicos (
-  id uuid primary key default gen_random_uuid(),
-  tipo text not null check (tipo in ('ingreso','egreso')),
-  descripcion text not null,
-  categoria text,
-  monto numeric(12,2) not null check (monto &gt;= 0),
-  frecuencia text not null default 'mensual'
-    check (frecuencia in ('mensual','bimestral','trimestral','semestral','anual','semanal','quincenal')),
-  dia integer check (dia between 1 and 31),
-  desde date not null,
-  hasta date,
-  producto text check (producto in ('winix20','build','ambos') or producto is null),
-  cliente text,
-  notas text,
-  activo boolean not null default true,
-  created_at timestamptz default now()
-);
-
--- Índices
-create index if not exists idx_mov_fecha on movimientos(fecha desc);
-create index if not exists idx_mov_tipo on movimientos(tipo);
-create index if not exists idx_mov_estado on movimientos(estado);
-create index if not exists idx_per_activo on periodicos(activo);
-create index if not exists idx_per_tipo on periodicos(tipo);
-
--- Deshabilitar RLS para uso personal
-alter table movimientos disable row level security;
-alter table periodicos disable row level security;
-
--- Verificar
-select 'movimientos' as tabla, count(*) from movimientos
-union all
-select 'periodicos', count(*) from periodicos;</pre>
+            <pre style="font-family:var(--mono);font-size:11px;color:#A8D8A8;white-space:pre;line-height:1.6" id="sqlSchema"></pre>
           </div>
           <button class="btn btn-ghost" style="margin-top:12px" onclick="copySql()">Copiar SQL</button>
         </div>
@@ -1271,15 +996,15 @@ select 'periodicos', count(*) from periodicos;</pre>
 <div class="modal-overlay" id="modalPeriodicoOverlay">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modalPeriodicoTitle">Editar Regla Periódica</div>
+      <div class="modal-title" id="modalPeriodicoTitle">Nueva Regla Periódica</div>
       <span class="modal-close" onclick="closeModalPeriodico()">×</span>
     </div>
     <div class="modal-body">
-      <input type="hidden" id="pEditId" value="82641f7b-9651-48ee-b186-8f5e3d7ae1d8">
+      <input type="hidden" id="pEditId" value="">
       <div class="form-group">
         <label class="form-label">Tipo</label>
         <div class="type-toggle">
-          <input type="radio" name="pTipo" id="pTipoIngreso" value="ingreso" checked="">
+          <input type="radio" name="pTipo" id="pTipoIngreso" value="ingreso" checked>
           <label for="pTipoIngreso" class="ingreso-label">↑ Cobro Periódico</label>
           <input type="radio" name="pTipo" id="pTipoEgreso" value="egreso">
           <label for="pTipoEgreso" class="egreso-label">↓ Pago Periódico</label>
@@ -1292,7 +1017,9 @@ select 'periodicos', count(*) from periodicos;</pre>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Categoría</label>
-          <select class="form-control" id="pCat"><option value="">— seleccioná —</option><option value="Costo Desarrollo (Mateo)">Costo Desarrollo (Mateo)</option><option value="Consultoría">Consultoría</option><option value="Legales">Legales</option><option value="Mantenimiento Cliente">Mantenimiento Cliente</option><option value="Infraestructura">Infraestructura</option><option value="Marketing">Marketing</option><option value="Otros Egresos">Otros Egresos</option></select>
+          <select class="form-control" id="pCat">
+            <option value="">— seleccioná —</option>
+          </select>
         </div>
         <div class="form-group">
           <label class="form-label">Monto (USD)</label>
@@ -1312,7 +1039,7 @@ select 'periodicos', count(*) from periodicos;</pre>
             <option value="quincenal">Quincenal</option>
           </select>
         </div>
-        <div class="form-group" id="pDiaGroup" style="display: block;">
+        <div class="form-group" id="pDiaGroup">
           <label class="form-label">Día del Mes</label>
           <input type="number" class="form-control" id="pDia" placeholder="Ej: 5" min="1" max="31">
           <div class="form-hint">Día en que cae el cobro/pago cada mes</div>
@@ -1367,7 +1094,7 @@ select 'periodicos', count(*) from periodicos;</pre>
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modalTitle">Nuevo Pago Futuro</div>
+      <div class="modal-title" id="modalTitle">Nuevo Movimiento</div>
       <span class="modal-close" onclick="closeModal()">×</span>
     </div>
     <div class="modal-body">
@@ -1375,7 +1102,7 @@ select 'periodicos', count(*) from periodicos;</pre>
       <div class="form-group" id="tipoGroup">
         <label class="form-label">Tipo</label>
         <div class="type-toggle">
-          <input type="radio" name="tipo" id="tipoIngreso" value="ingreso" checked="">
+          <input type="radio" name="tipo" id="tipoIngreso" value="ingreso" checked>
           <label for="tipoIngreso" class="ingreso-label">↑ Ingreso / Cobro</label>
           <input type="radio" name="tipo" id="tipoEgreso" value="egreso">
           <label for="tipoEgreso" class="egreso-label">↓ Egreso / Gasto</label>
@@ -1388,7 +1115,9 @@ select 'periodicos', count(*) from periodicos;</pre>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Categoría</label>
-          <select class="form-control" id="fCat"><option value="">— seleccioná —</option><option value="Costo Desarrollo (Mateo)">Costo Desarrollo (Mateo)</option><option value="Consultoría">Consultoría</option><option value="Legales">Legales</option><option value="Mantenimiento Cliente">Mantenimiento Cliente</option><option value="Infraestructura">Infraestructura</option><option value="Marketing">Marketing</option><option value="Otros Egresos">Otros Egresos</option></select>
+          <select class="form-control" id="fCat">
+            <option value="">— seleccioná —</option>
+          </select>
         </div>
         <div class="form-group">
           <label class="form-label">Monto (USD)</label>
@@ -1418,7 +1147,7 @@ select 'periodicos', count(*) from periodicos;</pre>
         <label class="form-label">Notas</label>
         <input type="text" class="form-control" id="fNotas" placeholder="Observaciones...">
       </div>
-      <div class="form-group" id="proyectadoGroup" style="display: block;">
+      <div class="form-group" id="proyectadoGroup" style="display:none">
         <label class="form-label">Estado</label>
         <select class="form-control" id="fEstado">
           <option value="proyectado">Proyectado (futuro)</option>
@@ -1456,7 +1185,7 @@ const CATEGORIAS_INGRESO = [
   'Otros Ingresos'
 ];
 
-let CONFIG = { url: '', key: '', mode: 'local' };
+let CONFIG = { url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase' };;
 let MOVIMIENTOS = [];
 let PERIODICOS = [];
 let chartFlujo, chartEgresos, chartCaja;
@@ -1861,15 +1590,15 @@ function updatePCatOptions() {
 async function guardarPeriodico() {
   const tipo = document.querySelector('input[name="pTipo"]:checked').value;
   const desc = document.getElementById('pDesc').value.trim();
-  const cat = document.getElementById('pCat').value;
+  const cat = document.getElementById('pCat').value || null;
   const monto = parseFloat(document.getElementById('pMonto').value);
   const frecuencia = document.getElementById('pFrecuencia').value;
   const dia = parseInt(document.getElementById('pDia').value) || 1;
   const desde = document.getElementById('pDesde').value;
   const hasta = document.getElementById('pHasta').value || null;
-  const producto = document.getElementById('pProducto').value;
-  const cliente = document.getElementById('pCliente').value.trim();
-  const notas = document.getElementById('pNotas').value.trim();
+  const producto = document.getElementById('pProducto').value || null;
+  const cliente = document.getElementById('pCliente').value.trim() || null;
+  const notas = document.getElementById('pNotas').value.trim() || null;
   const activo = document.getElementById('pActivo').value === '1';
   const editId = document.getElementById('pEditId').value;
 
@@ -2341,12 +2070,12 @@ function closeModal() {
 async function guardarMovimiento() {
   const tipo = document.querySelector('input[name="tipo"]:checked').value;
   const desc = document.getElementById('fDesc').value.trim();
-  const cat = document.getElementById('fCat').value;
+  const cat = document.getElementById('fCat').value || null;
   const monto = parseFloat(document.getElementById('fMonto').value);
   const fecha = document.getElementById('fFecha').value;
-  const producto = document.getElementById('fProducto').value;
-  const cliente = document.getElementById('fCliente').value.trim();
-  const notas = document.getElementById('fNotas').value.trim();
+  const producto = document.getElementById('fProducto').value || null;
+  const cliente = document.getElementById('fCliente').value.trim() || null;
+  const notas = document.getElementById('fNotas').value.trim() || null;
   const estado = document.getElementById('fEstado').value || 'realizado';
   const editId = document.getElementById('editId').value;
 
@@ -2480,6 +2209,5 @@ document.getElementById('modalPeriodicoOverlay').addEventListener('click', funct
 document.getElementById('pTipoIngreso').addEventListener('change', updatePCatOptions);
 document.getElementById('pTipoEgreso').addEventListener('change', updatePCatOptions);
 </script>
-
-
-</body></html>
+</body>
+</html>
