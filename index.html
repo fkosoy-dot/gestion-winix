@@ -42,6 +42,35 @@
     font-size: 14px;
   }
 
+  /* LOGIN */
+  .login-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--navy-dark);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-screen.visible { display: flex; }
+  .login-box {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 40px 36px;
+    width: 380px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+  .login-logo { font-size: 28px; font-weight: 700; color: var(--navy-dark); margin-bottom: 4px; }
+  .login-logo span { color: var(--orange); }
+  .login-sub { font-size: 12px; color: var(--text-muted); font-family: var(--mono); margin-bottom: 28px; }
+  .login-title { font-size: 16px; font-weight: 600; color: var(--navy-dark); margin-bottom: 20px; }
+  .login-error { font-size: 12px; color: var(--red); font-family: var(--mono); margin-top: 10px; min-height: 16px; }
+  .login-footer { font-size: 11px; color: var(--text-muted); margin-top: 20px; font-family: var(--mono); text-align: center; }
+
+  /* BADGE medio pago */
+  .badge-banco { background: #E8EDF5; color: #1B3A6B; }
+  .badge-efectivo { background: #FFF8E1; color: #7A5800; }
+
   /* SIDEBAR */
   .layout { display: flex; min-height: 100vh; }
 
@@ -568,6 +597,26 @@
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Winix<span>.</span></div>
+    <div class="login-sub">Admin Financiero</div>
+    <div class="login-title">Ingresá con tu cuenta</div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" id="loginEmail" placeholder="tu@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:11px" onclick="doLogin()" id="loginBtn">Ingresar</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-footer">Solo usuarios autorizados por el administrador</div>
+  </div>
+</div>
+
 <div class="layout">
 
   <!-- SIDEBAR -->
@@ -613,6 +662,10 @@
       <div class="connection-status">
         <div class="status-dot" id="connStatus"></div>
         <span id="connLabel" style="color:rgba(255,255,255,0.4)">Sin conexión</span>
+      </div>
+      <div class="config-btn" onclick="doLogout()" style="margin-top:10px" id="logoutBtn" title="Cerrar sesión">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M10 3h3a1 1 0 011 1v8a1 1 0 01-1 1h-3v-1h3V4h-3V3zm-1.293 1.293l3 3a1 1 0 010 1.414l-3 3-1.414-1.414L9.586 9H2V7h7.586L8.293 5.707l1.414-1.414z"/></svg>
+        Cerrar sesión
       </div>
     </div>
   </aside>
@@ -711,17 +764,28 @@
         </div>
       </div>
       <div class="content">
-        <div class="metrics-grid" style="grid-template-columns: repeat(3,1fr)">
+        <div class="metrics-grid" style="grid-template-columns: repeat(5,1fr)">
           <div class="metric-card accent-orange">
-            <div class="metric-label">Saldo Actual</div>
+            <div class="metric-label">Saldo Total</div>
             <div class="metric-value" id="caja-saldo">—</div>
+            <div class="metric-delta neutral">banco + efectivo</div>
+          </div>
+          <div class="metric-card accent-navy">
+            <div class="metric-label">Saldo Banco</div>
+            <div class="metric-value" id="caja-saldo-banco">—</div>
+            <div class="metric-delta neutral">solo movimientos banco</div>
+          </div>
+          <div class="metric-card" style="border-left:3px solid #7A5800">
+            <div class="metric-label">Saldo Efectivo</div>
+            <div class="metric-value" id="caja-saldo-efectivo">—</div>
+            <div class="metric-delta neutral">solo movimientos efectivo</div>
           </div>
           <div class="metric-card accent-green">
-            <div class="metric-label">Total Ingresos Histórico</div>
+            <div class="metric-label">Total Ingresos</div>
             <div class="metric-value positive" id="caja-ing-total">—</div>
           </div>
           <div class="metric-card accent-red">
-            <div class="metric-label">Total Egresos Histórico</div>
+            <div class="metric-label">Total Egresos</div>
             <div class="metric-value negative" id="caja-eg-total">—</div>
           </div>
         </div>
@@ -790,6 +854,11 @@
           <select class="filter-select" id="filtroCategoria" onchange="renderMovimientos()">
             <option value="">Todas las categorías</option>
           </select>
+          <select class="filter-select" id="filtroMedioPago" onchange="renderMovimientos()">
+            <option value="">Todos los medios</option>
+            <option value="banco">Banco</option>
+            <option value="efectivo">Efectivo</option>
+          </select>
           <select class="filter-select" id="filtroMes" onchange="renderMovimientos()">
             <option value="">Todos los meses</option>
           </select>
@@ -802,13 +871,14 @@
                 <th>Descripción</th>
                 <th>Categoría</th>
                 <th>Cliente / Producto</th>
+                <th>Medio</th>
                 <th>Tipo</th>
                 <th style="text-align:right">Monto</th>
                 <th></th>
               </tr>
             </thead>
             <tbody id="tbody-movimientos">
-              <tr><td colspan="7" class="empty-state">Cargando...</td></tr>
+              <tr><td colspan="8" class="empty-state">Cargando...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1130,6 +1200,16 @@
           <input type="date" class="form-control" id="fFecha">
         </div>
         <div class="form-group">
+          <label class="form-label">Medio de Pago</label>
+          <select class="form-control" id="fMedioPago">
+            <option value="">Sin especificar</option>
+            <option value="banco">🏦 Banco</option>
+            <option value="efectivo">💵 Efectivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
           <label class="form-label">Producto</label>
           <select class="form-control" id="fProducto">
             <option value="">N/A</option>
@@ -1185,12 +1265,77 @@ const CATEGORIAS_INGRESO = [
   'Otros Ingresos'
 ];
 
-let CONFIG = { url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase' };;
+let CONFIG = {  url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase'  };
 let MOVIMIENTOS = [];
 let PERIODICOS = [];
 let chartFlujo, chartEgresos, chartCaja;
 let pnlMonths = 6;
 let modalMode = 'ingreso';
+let currentUser = null;
+
+// =============================================
+// AUTH
+// =============================================
+
+async function checkSession() {
+  if (!CONFIG.url || !CONFIG.key) { showLogin(); return; }
+  try {
+    const res = await fetch(CONFIG.url + '/auth/v1/user', {
+      headers: { 'apikey': CONFIG.key, 'Authorization': 'Bearer ' + (localStorage.getItem('winix_token') || '') }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      currentUser = data;
+      hideLogin();
+    } else {
+      showLogin();
+    }
+  } catch(e) { showLogin(); }
+}
+
+function showLogin() {
+  document.getElementById('loginScreen').classList.add('visible');
+}
+
+function hideLogin() {
+  document.getElementById('loginScreen').classList.remove('visible');
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+  errEl.textContent = '';
+  btn.textContent = 'Ingresando...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(CONFIG.url + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'apikey': CONFIG.key, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await res.json();
+    if (data.access_token) {
+      localStorage.setItem('winix_token', data.access_token);
+      currentUser = data.user;
+      hideLogin();
+      await init();
+    } else {
+      errEl.textContent = 'Email o contraseña incorrectos.';
+    }
+  } catch(e) {
+    errEl.textContent = 'Error de conexión.';
+  }
+  btn.textContent = 'Ingresar';
+  btn.disabled = false;
+}
+
+async function doLogout() {
+  localStorage.removeItem('winix_token');
+  currentUser = null;
+  showLogin();
+}
 
 function loadConfig() {
   const saved = localStorage.getItem('winix_cfg');
@@ -1236,10 +1381,11 @@ async function supabaseFetch(table, method='GET', body=null, id=null) {
   const base = CONFIG.url + '/rest/v1/' + table;
   const url = id ? base + '?id=eq.' + id : base;
   const orderCol = table === 'periodicos' ? 'created_at' : 'fecha';
+  const token = localStorage.getItem('winix_token') || CONFIG.key;
   const opts = {
     headers: {
       'apikey': CONFIG.key,
-      'Authorization': 'Bearer ' + CONFIG.key,
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json',
       'Prefer': method === 'POST' ? 'return=representation' : 'return=minimal'
     },
@@ -1768,8 +1914,23 @@ function renderCaja() {
   const egTotal = realizados.filter(m=>m.tipo==='egreso').reduce((s,m)=>s+(m.monto||0),0);
   const saldo = ingTotal - egTotal;
 
+  // Desglose por medio de pago
+  function saldoMedio(medio) {
+    const movs = realizados.filter(m => m.medio_pago === medio);
+    const ing = movs.filter(m=>m.tipo==='ingreso').reduce((s,m)=>s+(m.monto||0),0);
+    const eg = movs.filter(m=>m.tipo==='egreso').reduce((s,m)=>s+(m.monto||0),0);
+    return ing - eg;
+  }
+
+  const saldoBanco = saldoMedio('banco');
+  const saldoEfectivo = saldoMedio('efectivo');
+
   document.getElementById('caja-saldo').textContent = fmtUSD(saldo);
   document.getElementById('caja-saldo').className = 'metric-value ' + (saldo>=0?'positive':'negative');
+  document.getElementById('caja-saldo-banco').textContent = fmtUSD(saldoBanco);
+  document.getElementById('caja-saldo-banco').className = 'metric-value ' + (saldoBanco>=0?'positive':'negative');
+  document.getElementById('caja-saldo-efectivo').textContent = fmtUSD(saldoEfectivo);
+  document.getElementById('caja-saldo-efectivo').className = 'metric-value ' + (saldoEfectivo>=0?'positive':'negative');
   document.getElementById('caja-ing-total').textContent = fmtUSD(ingTotal);
   document.getElementById('caja-eg-total').textContent = fmtUSD(egTotal);
 
@@ -1915,10 +2076,10 @@ function renderMovimientos() {
   const filtroTipo = document.getElementById('filtroTipo').value;
   const filtroCat = document.getElementById('filtroCategoria').value;
   const filtroMes = document.getElementById('filtroMes').value;
+  const filtroMedio = document.getElementById('filtroMedioPago').value;
 
   const realizados = MOVIMIENTOS.filter(m => m.estado !== 'proyectado');
 
-  // Populate filters
   const cats = [...new Set(realizados.map(m=>m.categoria).filter(Boolean))].sort();
   const catSel = document.getElementById('filtroCategoria');
   const curCat = catSel.value;
@@ -1933,14 +2094,21 @@ function renderMovimientos() {
   if (filtroTipo) movs = movs.filter(m=>m.tipo===filtroTipo);
   if (filtroCat) movs = movs.filter(m=>m.categoria===filtroCat);
   if (filtroMes) movs = movs.filter(m=>movYM(m)===filtroMes);
+  if (filtroMedio) movs = movs.filter(m=>m.medio_pago===filtroMedio);
 
   movs.sort((a,b) => (b.fecha||'') < (a.fecha||'') ? -1 : 1);
 
   const tbody = document.getElementById('tbody-movimientos');
   if (!movs.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">📋</div>No hay movimientos para los filtros seleccionados</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><div class="empty-state-icon">📋</div>No hay movimientos para los filtros seleccionados</td></tr>';
     return;
   }
+
+  const badgeMedio = m => {
+    if (m.medio_pago === 'banco') return '<span class="badge badge-banco">🏦 Banco</span>';
+    if (m.medio_pago === 'efectivo') return '<span class="badge badge-efectivo">💵 Efectivo</span>';
+    return '<span style="color:var(--text-muted);font-size:11px">—</span>';
+  };
 
   tbody.innerHTML = movs.map(m => `
     <tr>
@@ -1954,6 +2122,7 @@ function renderMovimientos() {
         ${m.producto ? '<span class="badge badge-'+(m.producto==='winix20'?'winix20':'build')+'">'+m.producto+'</span>' : ''}
         ${m.cliente ? '<span style="font-size:12px;color:var(--text-muted);margin-left:4px">'+m.cliente+'</span>' : ''}
       </td>
+      <td>${badgeMedio(m)}</td>
       <td>${m.tipo === 'ingreso' ? '<span class="badge badge-ingreso">Ingreso</span>' : '<span class="badge badge-egreso">Egreso</span>'}</td>
       <td style="text-align:right" class="${m.tipo==='ingreso'?'amount-positive':'amount-negative'}">${m.tipo==='ingreso'?'+':'-'}${fmtUSD(m.monto)}</td>
       <td>
@@ -2030,6 +2199,7 @@ function openModal(mode) {
   document.getElementById('fCliente').value = '';
   document.getElementById('fNotas').value = '';
   document.getElementById('fProducto').value = '';
+  document.getElementById('fMedioPago').value = '';
 
   document.getElementById('tipoIngreso').addEventListener('change', updateCatOptions);
   document.getElementById('tipoEgreso').addEventListener('change', updateCatOptions);
@@ -2059,6 +2229,7 @@ function editarMovimiento(id) {
   document.getElementById('fProducto').value = m.producto || '';
   document.getElementById('fCliente').value = m.cliente || '';
   document.getElementById('fNotas').value = m.notas || '';
+  document.getElementById('fMedioPago').value = m.medio_pago || '';
   document.getElementById('proyectadoGroup').style.display = 'block';
   document.getElementById('fEstado').value = m.estado || 'realizado';
 }
@@ -2077,12 +2248,13 @@ async function guardarMovimiento() {
   const cliente = document.getElementById('fCliente').value.trim() || null;
   const notas = document.getElementById('fNotas').value.trim() || null;
   const estado = document.getElementById('fEstado').value || 'realizado';
+  const medio_pago = document.getElementById('fMedioPago').value || null;
   const editId = document.getElementById('editId').value;
 
   if (!desc || !monto || !fecha) { alert('Completá descripción, monto y fecha.'); return; }
   if (isNaN(monto) || monto <= 0) { alert('Monto inválido.'); return; }
 
-  const mov = { tipo, descripcion:desc, categoria:cat, monto, fecha, producto, cliente, notas, estado };
+  const mov = { tipo, descripcion:desc, categoria:cat, monto, fecha, producto, cliente, notas, estado, medio_pago };
   if (editId) mov.id = editId;
 
   const ok = await saveMovimiento(mov);
@@ -2142,6 +2314,7 @@ create table if not exists movimientos (
   notas text,
   estado text not null default 'realizado'
     check (estado in ('realizado','proyectado')),
+  medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null),
   created_at timestamptz default now()
 );
 
@@ -2163,18 +2336,28 @@ create table if not exists periodicos (
   created_at timestamptz default now()
 );
 
+-- Agregar columna medio_pago si ya existe la tabla sin ella
+alter table movimientos add column if not exists
+  medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null);
+
 -- Índices
 create index if not exists idx_mov_fecha on movimientos(fecha desc);
 create index if not exists idx_mov_tipo on movimientos(tipo);
 create index if not exists idx_mov_estado on movimientos(estado);
+create index if not exists idx_mov_medio on movimientos(medio_pago);
 create index if not exists idx_per_activo on periodicos(activo);
-create index if not exists idx_per_tipo on periodicos(tipo);
 
--- Deshabilitar RLS para uso personal
+-- Deshabilitar RLS para uso personal sin auth
 alter table movimientos disable row level security;
 alter table periodicos disable row level security;
 
--- Verificar
+-- ============================================
+-- USUARIOS: crear desde Supabase Dashboard
+-- Authentication → Users → "Invite user"
+-- Ingresá el email del socio y les llega
+-- un mail para setear su contraseña.
+-- ============================================
+
 select 'movimientos' as tabla, count(*) from movimientos
 union all
 select 'periodicos', count(*) from periodicos;`;
@@ -2189,6 +2372,10 @@ function copySql() {
 
 async function init() {
   document.getElementById('sqlSchema').textContent = SQL;
+  if (CONFIG.url && CONFIG.key) {
+    await checkSession();
+    if (!currentUser && CONFIG.mode !== 'local') return;
+  }
   await loadData();
   renderDashboard();
   document.getElementById('tipoIngreso').addEventListener('change', updateCatOptions);
