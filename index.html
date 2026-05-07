@@ -646,13 +646,9 @@
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M14 2H2a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1zM2 12V5h12v7H2z"/><path d="M4 7h8v1H4zm0 2h5v1H4z"/></svg>
         Movimientos
       </div>
-      <div class="nav-item" onclick="showPage('proyectados')">
+      <div class="nav-item" onclick="showPage('futuros')">
         <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zM8 3v5l3 3-1 1-3.5-3.5V3H8z"/></svg>
-        Futuros / Proyectados
-      </div>
-      <div class="nav-item" onclick="showPage('periodicos')">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 1a6 6 0 110 12A6 6 0 018 2z"/><path d="M7.5 4v4.5l3 1.5.5-.87-2.5-1.25V4z"/><circle cx="3" cy="8" r="1"/><circle cx="13" cy="8" r="1"/><circle cx="8" cy="3" r="1"/></svg>
-        Periódicos
+        Futuros
       </div>
       <div class="nav-section-label">Sistema</div>
       <div class="nav-item" onclick="showPage('config')">
@@ -887,82 +883,64 @@
       </div>
     </div>
 
-    <!-- ====== PAGE: PROYECTADOS ====== -->
-    <div id="page-proyectados" class="page">
+    <!-- ====== PAGE: FUTUROS (unificado) ====== -->
+    <div id="page-futuros" class="page">
       <div class="topbar">
         <div>
-          <div class="page-title">Futuros & Proyectados</div>
-          <div class="page-subtitle">pagos y cobros esperados</div>
+          <div class="page-title">Futuros</div>
+          <div class="page-subtitle">cobros y pagos únicos o periódicos</div>
         </div>
         <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModal('futuro-ingreso')">+ Cobro Futuro</button>
-          <button class="btn btn-ghost" onclick="openModal('futuro-egreso')">+ Pago Futuro</button>
+          <button class="btn btn-primary" onclick="openModalFuturo('ingreso')">+ Cobro Futuro</button>
+          <button class="btn btn-ghost" onclick="openModalFuturo('egreso')">+ Pago Futuro</button>
         </div>
       </div>
       <div class="content">
-        <div class="alert alert-info">Los movimientos proyectados alimentan el PnL pero NO impactan el saldo de caja hasta que sean marcados como realizados.</div>
-        <div class="panel-full">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Fecha Esperada</th>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Tipo</th>
-                <th>Estado</th>
-                <th style="text-align:right">Monto</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="tbody-proyectados">
-              <tr><td colspan="7" class="empty-state">Cargando...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ====== PAGE: PERIÓDICOS ====== -->
-    <div id="page-periodicos" class="page">
-      <div class="topbar">
-        <div>
-          <div class="page-title">Cobros & Pagos Periódicos</div>
-          <div class="page-subtitle">reglas de recurrencia automática</div>
-        </div>
-        <div class="topbar-right">
-          <button class="btn btn-primary" onclick="openModalPeriodico('ingreso')">+ Cobro Periódico</button>
-          <button class="btn btn-ghost" onclick="openModalPeriodico('egreso')">+ Pago Periódico</button>
-        </div>
-      </div>
-      <div class="content">
-        <div class="alert alert-info">Las reglas activas generan movimientos proyectados automáticamente al calcular el PnL. No crean registros reales hasta que los marcás como realizados.</div>
+        <div class="alert alert-info">Los futuros alimentan el PnL proyectado. No impactan el saldo de caja hasta que los imputás con un movimiento real.</div>
 
         <div class="metrics-grid" style="grid-template-columns: repeat(4,1fr); margin-bottom:20px">
           <div class="metric-card accent-green">
             <div class="metric-label">Cobros Activos</div>
-            <div class="metric-value" id="per-cobros-activos">—</div>
-            <div class="metric-delta neutral" id="per-cobros-monto">—</div>
+            <div class="metric-value" id="fut-cobros-activos">—</div>
+            <div class="metric-delta neutral" id="fut-cobros-monto">—</div>
           </div>
           <div class="metric-card accent-red">
             <div class="metric-label">Pagos Activos</div>
-            <div class="metric-value" id="per-pagos-activos">—</div>
-            <div class="metric-delta neutral" id="per-pagos-monto">—</div>
+            <div class="metric-value" id="fut-pagos-activos">—</div>
+            <div class="metric-delta neutral" id="fut-pagos-monto">—</div>
           </div>
           <div class="metric-card accent-orange">
             <div class="metric-label">Flujo Neto Mensual</div>
-            <div class="metric-value" id="per-neto-mensual">—</div>
-            <div class="metric-delta neutral">estimado mensual</div>
+            <div class="metric-value" id="fut-neto-mensual">—</div>
+            <div class="metric-delta neutral">estimado recurrentes</div>
           </div>
           <div class="metric-card accent-navy">
-            <div class="metric-label">Reglas Totales</div>
-            <div class="metric-value" id="per-total">—</div>
-            <div class="metric-delta neutral" id="per-inactivos">—</div>
+            <div class="metric-label">Total Futuros</div>
+            <div class="metric-value" id="fut-total">—</div>
+            <div class="metric-delta neutral" id="fut-breakdown">—</div>
           </div>
+        </div>
+
+        <div class="filters-bar">
+          <select class="filter-select" id="filtroFuturoTipo" onchange="renderFuturos()">
+            <option value="">Todos los tipos</option>
+            <option value="ingreso">Ingresos</option>
+            <option value="egreso">Egresos</option>
+          </select>
+          <select class="filter-select" id="filtroFuturoFrec" onchange="renderFuturos()">
+            <option value="">Todas las frecuencias</option>
+            <option value="unico">Únicos</option>
+            <option value="mensual">Mensuales</option>
+            <option value="bimestral">Bimestrales</option>
+            <option value="trimestral">Trimestrales</option>
+            <option value="semestral">Semestrales</option>
+            <option value="anual">Anuales</option>
+          </select>
         </div>
 
         <div class="panel-full">
           <div class="panel-header">
-            <div class="panel-title">Ingresos Periódicos</div>
+            <div class="panel-title" id="fut-table-title">Todos los Futuros</div>
           </div>
           <table class="data-table">
             <thead>
@@ -970,49 +948,25 @@
                 <th>Descripción</th>
                 <th>Categoría</th>
                 <th>Frecuencia</th>
-                <th>Día</th>
+                <th>Fecha / Día</th>
                 <th>Desde</th>
                 <th>Hasta</th>
                 <th>Cliente / Producto</th>
+                <th>Imputaciones</th>
                 <th>Estado</th>
                 <th style="text-align:right">Monto</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody id="tbody-per-ingresos">
-              <tr><td colspan="10" class="empty-state">Sin reglas de ingreso</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="panel-full">
-          <div class="panel-header">
-            <div class="panel-title">Egresos Periódicos</div>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Frecuencia</th>
-                <th>Día</th>
-                <th>Desde</th>
-                <th>Hasta</th>
-                <th>Proveedor / Ref.</th>
-                <th>Estado</th>
-                <th style="text-align:right">Monto</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="tbody-per-egresos">
-              <tr><td colspan="10" class="empty-state">Sin reglas de egreso</td></tr>
+            <tbody id="tbody-futuros">
+              <tr><td colspan="11" class="empty-state">Cargando...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ====== PAGE: CONFIG ====== -->
+        <!-- ====== PAGE: CONFIG ====== -->
     <div id="page-config" class="page">
       <div class="topbar">
         <div>
@@ -1064,74 +1018,87 @@
   </main>
 </div>
 
-<!-- MODAL PERIODICO -->
-<div class="modal-overlay" id="modalPeriodicoOverlay">
+<!-- MODAL FUTURO (unificado: único + periódico) -->
+<div class="modal-overlay" id="modalFuturoOverlay">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modalPeriodicoTitle">Nueva Regla Periódica</div>
-      <span class="modal-close" onclick="closeModalPeriodico()">×</span>
+      <div class="modal-title" id="modalFuturoTitle">Nuevo Futuro</div>
+      <span class="modal-close" onclick="closeModalFuturo()">×</span>
     </div>
     <div class="modal-body">
-      <input type="hidden" id="pEditId" value="">
+      <input type="hidden" id="fEditId" value="">
       <div class="form-group">
         <label class="form-label">Tipo</label>
         <div class="type-toggle">
-          <input type="radio" name="pTipo" id="pTipoIngreso" value="ingreso" checked>
-          <label for="pTipoIngreso" class="ingreso-label">↑ Cobro Periódico</label>
-          <input type="radio" name="pTipo" id="pTipoEgreso" value="egreso">
-          <label for="pTipoEgreso" class="egreso-label">↓ Pago Periódico</label>
+          <input type="radio" name="fTipo" id="fTipoIngreso" value="ingreso" checked>
+          <label for="fTipoIngreso" class="ingreso-label">↑ Cobro</label>
+          <input type="radio" name="fTipo" id="fTipoEgreso" value="egreso">
+          <label for="fTipoEgreso" class="egreso-label">↓ Pago</label>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Descripción</label>
-        <input type="text" class="form-control" id="pDesc" placeholder="Ej: Membresía mensual — Constructora X">
+        <input type="text" class="form-control" id="fFutDesc" placeholder="Ej: Membresía mensual — Constructora X">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Categoría</label>
-          <select class="form-control" id="pCat">
+          <select class="form-control" id="fFutCat">
             <option value="">— seleccioná —</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Monto (USD)</label>
-          <input type="number" class="form-control" id="pMonto" placeholder="0" min="0" step="0.01">
+          <input type="number" class="form-control" id="fFutMonto" placeholder="0" min="0" step="0.01">
         </div>
       </div>
-      <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Frecuencia</label>
+        <select class="form-control" id="fFutFrecuencia" onchange="onFutFrecuenciaChange()">
+          <option value="unico">Único (ocurrencia puntual)</option>
+          <option value="mensual">Mensual</option>
+          <option value="bimestral">Bimestral (cada 2 meses)</option>
+          <option value="trimestral">Trimestral (cada 3 meses)</option>
+          <option value="semestral">Semestral (cada 6 meses)</option>
+          <option value="anual">Anual</option>
+          <option value="semanal">Semanal</option>
+          <option value="quincenal">Quincenal</option>
+        </select>
+      </div>
+      <div id="fFutUnicoGroup">
         <div class="form-group">
-          <label class="form-label">Frecuencia</label>
-          <select class="form-control" id="pFrecuencia" onchange="onFrecuenciaChange()">
-            <option value="mensual">Mensual</option>
-            <option value="bimestral">Bimestral (cada 2 meses)</option>
-            <option value="trimestral">Trimestral (cada 3 meses)</option>
-            <option value="semestral">Semestral (cada 6 meses)</option>
-            <option value="anual">Anual</option>
-            <option value="semanal">Semanal</option>
-            <option value="quincenal">Quincenal</option>
-          </select>
-        </div>
-        <div class="form-group" id="pDiaGroup">
-          <label class="form-label">Día del Mes</label>
-          <input type="number" class="form-control" id="pDia" placeholder="Ej: 5" min="1" max="31">
-          <div class="form-hint">Día en que cae el cobro/pago cada mes</div>
+          <label class="form-label">Fecha esperada</label>
+          <input type="date" class="form-control" id="fFutFechaUnica">
+          <div class="form-hint">Fecha en que se espera que ocurra</div>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Fecha de Inicio</label>
-          <input type="date" class="form-control" id="pDesde">
+      <div id="fFutPeriodicoGroup" style="display:none">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Día del Mes</label>
+            <input type="number" class="form-control" id="fFutDia" placeholder="Ej: 5" min="1" max="31">
+          </div>
+          <div class="form-group" id="fFutDiaSemanaGroup" style="display:none">
+            <label class="form-label">Nota</label>
+            <div class="form-hint" style="margin-top:8px">Frecuencia semanal/quincenal: se expande desde la fecha de inicio</div>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Fecha de Fin (opcional)</label>
-          <input type="date" class="form-control" id="pHasta">
-          <div class="form-hint">Dejar vacío = indefinido</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Fecha de Inicio</label>
+            <input type="date" class="form-control" id="fFutDesde">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fecha de Fin (opcional)</label>
+            <input type="date" class="form-control" id="fFutHasta">
+            <div class="form-hint">Dejar vacío = indefinido</div>
+          </div>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Producto</label>
-          <select class="form-control" id="pProducto">
+          <select class="form-control" id="fFutProducto">
             <option value="">N/A</option>
             <option value="winix20">Winix 2.0</option>
             <option value="build">Winix Build</option>
@@ -1140,7 +1107,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Estado</label>
-          <select class="form-control" id="pActivo">
+          <select class="form-control" id="fFutActivo">
             <option value="1">Activo</option>
             <option value="0">Pausado</option>
           </select>
@@ -1148,16 +1115,16 @@
       </div>
       <div class="form-group">
         <label class="form-label">Cliente / Proveedor (opcional)</label>
-        <input type="text" class="form-control" id="pCliente" placeholder="Nombre">
+        <input type="text" class="form-control" id="fFutCliente" placeholder="Nombre">
       </div>
       <div class="form-group">
         <label class="form-label">Notas</label>
-        <input type="text" class="form-control" id="pNotas" placeholder="Observaciones...">
+        <input type="text" class="form-control" id="fFutNotas" placeholder="Observaciones...">
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModalPeriodico()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarPeriodico()">Guardar Regla</button>
+      <button class="btn btn-ghost" onclick="closeModalFuturo()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarFuturo()">Guardar</button>
     </div>
   </div>
 </div>
@@ -1277,9 +1244,10 @@ const CATEGORIAS_INGRESO = [
   'Otros Ingresos'
 ];
 
-let CONFIG = { url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase' };
+let CONFIG = { url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase'  };
 let MOVIMIENTOS = [];
-let PERIODICOS = [];
+let PERIODICOS = []; // legacy, migrated to FUTUROS
+let FUTUROS = [];
 let IMPUTACIONES = [];
 let chartFlujo, chartEgresos, chartCaja;
 let pnlMonths = 6;
@@ -1393,7 +1361,7 @@ function updateConnStatus(state, label) {
 async function supabaseFetch(table, method='GET', body=null, id=null) {
   const base = CONFIG.url + '/rest/v1/' + table;
   const url = id ? base + '?id=eq.' + id : base;
-  const orderCol = table === 'periodicos' || table === 'imputaciones' ? 'created_at' : 'fecha';
+  const orderCol = (table === 'periodicos' || table === 'imputaciones' || table === 'futuros') ? 'created_at' : 'fecha';
   const token = localStorage.getItem('winix_token') || CONFIG.key;
   const opts = {
     headers: {
@@ -1415,6 +1383,8 @@ function localLoad() {
   MOVIMIENTOS = saved ? JSON.parse(saved) : [];
   const savedP = localStorage.getItem('winix_periodicos');
   PERIODICOS = savedP ? JSON.parse(savedP) : [];
+  const savedF = localStorage.getItem('winix_futuros');
+  FUTUROS = savedF ? JSON.parse(savedF) : PERIODICOS.map(p => ({...p, frecuencia: p.frecuencia||'mensual'}));
   const savedI = localStorage.getItem('winix_imputaciones');
   IMPUTACIONES = savedI ? JSON.parse(savedI) : [];
 }
@@ -1422,6 +1392,7 @@ function localLoad() {
 function localSave() {
   localStorage.setItem('winix_movs', JSON.stringify(MOVIMIENTOS));
   localStorage.setItem('winix_periodicos', JSON.stringify(PERIODICOS));
+  localStorage.setItem('winix_futuros', JSON.stringify(FUTUROS));
   localStorage.setItem('winix_imputaciones', JSON.stringify(IMPUTACIONES));
 }
 
@@ -1431,6 +1402,14 @@ async function loadData() {
       MOVIMIENTOS = await supabaseFetch('movimientos');
       PERIODICOS = await supabaseFetch('periodicos');
       try { IMPUTACIONES = await supabaseFetch('imputaciones'); } catch(e2) { IMPUTACIONES = []; }
+      // Load futuros (new unified table) — fallback to periodicos if not migrated yet
+      try {
+        FUTUROS = await supabaseFetch('futuros');
+        if (!FUTUROS.length && PERIODICOS.length) FUTUROS = PERIODICOS;
+      } catch(e3) {
+        // futuros table not yet created — use periodicos as futuros
+        FUTUROS = PERIODICOS;
+      }
       updateConnStatus('connected', 'Supabase OK');
       document.getElementById('connAlert').className = 'alert alert-success';
       document.getElementById('connAlert').textContent = '✓ Conectado a Supabase correctamente.';
@@ -1545,7 +1524,7 @@ function getImputacionMonths(n=6) {
 // Modal helpers for imputacion selector
 function populateImputacionSelector(tipo) {
   const sel = document.getElementById('fImputacionPer');
-  const perFiltrados = PERIODICOS.filter(p => p.activo && p.tipo === tipo);
+  const perFiltrados = FUTUROS.filter(p => p.activo && p.tipo === tipo);
   sel.innerHTML = '<option value="">— No corresponde —</option>' +
     perFiltrados.map(p => `<option value="${p.id}">${p.descripcion} (${fmtUSD(p.monto)}/${p.frecuencia})</option>`).join('');
   document.getElementById('fImputacionMes').style.display = 'none';
@@ -1569,22 +1548,81 @@ function onImputacionPerChange() {
 }
 
 // =============================================
-// PERIÓDICOS — ENGINE (con imputaciones)
+// FUTUROS — DATA (unified: único + periódico)
+// replaces both PERIODICOS and manual PROYECTADOS
 // =============================================
 
 const FRECUENCIA_MESES = {
   mensual: 1, bimestral: 2, trimestral: 3, semestral: 6, anual: 12
 };
 
+// FUTUROS CRUD
+async function saveFuturo(p) {
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try {
+      if (p.id && !String(p.id).startsWith('local_')) {
+        await supabaseFetch('futuros', 'PATCH', p, p.id);
+      } else {
+        const pClean = {...p}; delete pClean.id;
+        const res = await supabaseFetch('futuros', 'POST', pClean);
+        const data = await res.json();
+        if (data[0]) p.id = data[0].id;
+      }
+    } catch(e) { alert('Error guardando futuro: ' + e.message); return false; }
+  }
+  if (p.id) {
+    const idx = FUTUROS.findIndex(x => x.id === p.id);
+    if (idx >= 0) FUTUROS[idx] = p; else FUTUROS.unshift(p);
+  } else {
+    p.id = 'local_' + Date.now();
+    FUTUROS.unshift(p);
+  }
+  localSave();
+  return true;
+}
+
+async function deleteFuturo(id) {
+  if (!confirm('¿Eliminar este futuro?')) return;
+  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
+    try { await supabaseFetch('futuros', 'DELETE', null, id); } catch(e) { alert('Error: ' + e.message); }
+  }
+  FUTUROS = FUTUROS.filter(p => p.id !== id);
+  localSave();
+  await refreshAll();
+}
+
+async function toggleFuturo(id) {
+  const p = FUTUROS.find(x => x.id === id);
+  if (!p) return;
+  p.activo = !p.activo;
+  await saveFuturo(p);
+  await refreshAll();
+}
+
+// =============================================
+// FUTUROS — ENGINE (expansion + imputaciones)
+// =============================================
+
 function nextOccurrences(regla, fromYM, toYM) {
   const results = [];
+  const freq = regla.frecuencia || 'mensual';
+
+  // Único: one occurrence at fecha_unica
+  if (freq === 'unico') {
+    const fecha = regla.fecha_unica;
+    if (!fecha) return results;
+    const ym = fecha.slice(0, 7);
+    if (ym >= fromYM && ym <= toYM) results.push(fecha);
+    return results;
+  }
+
   const dia = parseInt(regla.dia) || 1;
   const desde = regla.desde || fromYM + '-01';
   const hasta = regla.hasta || null;
-  const freq = regla.frecuencia || 'mensual';
   const saltoMeses = FRECUENCIA_MESES[freq];
 
   if (!saltoMeses) {
+    // semanal / quincenal
     const days = freq === 'semanal' ? 7 : 15;
     let cur = new Date(desde);
     const endDate = new Date(toYM + '-28');
@@ -1619,19 +1657,18 @@ function nextOccurrences(regla, fromYM, toYM) {
   return results;
 }
 
-function expandPeriodicos(fromYM, toYM) {
+function expandFuturos(fromYM, toYM) {
   const virtual = [];
-  for (const r of PERIODICOS) {
+  for (const r of FUTUROS) {
     if (!r.activo) continue;
     const dates = nextOccurrences(r, fromYM, toYM);
     for (const fecha of dates) {
       const periodo = fecha.slice(0, 7);
-      // Skip if this period is already imputated — real movimiento covers it
       if (isImputado(r.id, periodo)) continue;
       virtual.push({
-        id: 'per_' + r.id + '_' + fecha,
+        id: 'fut_' + r.id + '_' + fecha,
         tipo: r.tipo,
-        descripcion: r.descripcion + ' (' + labelFrecuencia(r.frecuencia) + ')',
+        descripcion: r.descripcion + (r.frecuencia !== 'unico' ? ' (' + labelFrecuencia(r.frecuencia) + ')' : ''),
         categoria: r.categoria,
         monto: r.monto,
         fecha,
@@ -1639,8 +1676,8 @@ function expandPeriodicos(fromYM, toYM) {
         cliente: r.cliente,
         notas: r.notas,
         estado: 'proyectado',
-        es_periodico: true,
-        periodico_id: r.id
+        es_futuro: true,
+        futuro_id: r.id
       });
     }
   }
@@ -1648,60 +1685,24 @@ function expandPeriodicos(fromYM, toYM) {
 }
 
 function labelFrecuencia(f) {
-  const map = { mensual:'mensual', bimestral:'bim.', trimestral:'trim.', semestral:'sem.', anual:'anual', semanal:'semanal', quincenal:'quincenal' };
+  const map = { unico:'único', mensual:'mensual', bimestral:'bim.', trimestral:'trim.', semestral:'sem.', anual:'anual', semanal:'semanal', quincenal:'quincenal' };
   return map[f] || f;
 }
 
-async function savePeriodico(p) {
-  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
-    try {
-      if (p.id && !String(p.id).startsWith('local_')) {
-        await supabaseFetch('periodicos', 'PATCH', p, p.id);
-      } else {
-        const res = await supabaseFetch('periodicos', 'POST', p);
-        const data = await res.json();
-        if (data[0]) p.id = data[0].id;
-      }
-    } catch(e) { alert('Error guardando en Supabase: ' + e.message); return false; }
-  }
-  if (p.id) {
-    const idx = PERIODICOS.findIndex(x => x.id === p.id);
-    if (idx >= 0) PERIODICOS[idx] = p; else PERIODICOS.unshift(p);
-  } else {
-    p.id = 'local_' + Date.now();
-    PERIODICOS.unshift(p);
-  }
-  localSave();
-  return true;
-}
+// =============================================
+// FUTUROS — RENDER
+// =============================================
 
-async function deletePeriodico(id) {
-  if (!confirm('¿Eliminar esta regla periódica?')) return;
-  if (CONFIG.mode === 'supabase' && CONFIG.url && CONFIG.key) {
-    try { await supabaseFetch('periodicos', 'DELETE', null, id); }
-    catch(e) { alert('Error: ' + e.message); }
-  }
-  PERIODICOS = PERIODICOS.filter(p => p.id !== id);
-  localSave();
-  await refreshAll();
-}
+function renderFuturos() {
+  const filtroTipo = document.getElementById('filtroFuturoTipo').value;
+  const filtroFrec = document.getElementById('filtroFuturoFrec').value;
 
-async function togglePeriodico(id) {
-  const p = PERIODICOS.find(x => x.id === id);
-  if (!p) return;
-  p.activo = !p.activo;
-  await savePeriodico(p);
-  await refreshAll();
-}
-
-function renderPeriodicos() {
-  const ingresos = PERIODICOS.filter(p => p.tipo === 'ingreso');
-  const egresos = PERIODICOS.filter(p => p.tipo === 'egreso');
-  const activos = PERIODICOS.filter(p => p.activo);
+  const activos = FUTUROS.filter(p => p.activo);
   const cobActivos = activos.filter(p => p.tipo === 'ingreso');
   const pagActivos = activos.filter(p => p.tipo === 'egreso');
 
   function toMensual(p) {
+    if (p.frecuencia === 'unico') return 0;
     if (p.frecuencia === 'semanal') return p.monto * 4.3;
     if (p.frecuencia === 'quincenal') return p.monto * 2;
     const m = FRECUENCIA_MESES[p.frecuencia] || 1;
@@ -1711,167 +1712,185 @@ function renderPeriodicos() {
   const ingMen = cobActivos.reduce((s,p) => s + toMensual(p), 0);
   const egMen = pagActivos.reduce((s,p) => s + toMensual(p), 0);
   const netoMen = ingMen - egMen;
+  const unicos = FUTUROS.filter(p => p.frecuencia === 'unico').length;
+  const periodicos = FUTUROS.filter(p => p.frecuencia !== 'unico').length;
 
-  document.getElementById('per-cobros-activos').textContent = cobActivos.length;
-  document.getElementById('per-cobros-monto').textContent = '~' + fmtUSD(ingMen) + '/mes';
-  document.getElementById('per-pagos-activos').textContent = pagActivos.length;
-  document.getElementById('per-pagos-monto').textContent = '~' + fmtUSD(egMen) + '/mes';
-  document.getElementById('per-neto-mensual').textContent = fmtUSD(netoMen);
-  document.getElementById('per-neto-mensual').className = 'metric-value ' + (netoMen >= 0 ? 'positive' : 'negative');
-  document.getElementById('per-total').textContent = PERIODICOS.length;
-  const inact = PERIODICOS.filter(p=>!p.activo).length;
-  document.getElementById('per-inactivos').textContent = inact > 0 ? inact + ' pausada' + (inact>1?'s':'') : 'todas activas';
+  document.getElementById('fut-cobros-activos').textContent = cobActivos.length;
+  document.getElementById('fut-cobros-monto').textContent = ingMen > 0 ? '~' + fmtUSD(ingMen) + '/mes' : 'sin recurrentes';
+  document.getElementById('fut-pagos-activos').textContent = pagActivos.length;
+  document.getElementById('fut-pagos-monto').textContent = egMen > 0 ? '~' + fmtUSD(egMen) + '/mes' : 'sin recurrentes';
+  document.getElementById('fut-neto-mensual').textContent = fmtUSD(netoMen);
+  document.getElementById('fut-neto-mensual').className = 'metric-value ' + (netoMen >= 0 ? 'positive' : 'negative');
+  document.getElementById('fut-total').textContent = FUTUROS.length;
+  document.getElementById('fut-breakdown').textContent = unicos + ' único' + (unicos!==1?'s':'') + ', ' + periodicos + ' periódico' + (periodicos!==1?'s':'');
 
-  renderTablaPerio('tbody-per-ingresos', ingresos);
-  renderTablaPerio('tbody-per-egresos', egresos);
-}
+  let rows = [...FUTUROS];
+  if (filtroTipo) rows = rows.filter(p => p.tipo === filtroTipo);
+  if (filtroFrec) rows = rows.filter(p => p.frecuencia === filtroFrec);
+  rows.sort((a,b) => {
+    const fa = a.fecha_unica || a.desde || '';
+    const fb = b.fecha_unica || b.desde || '';
+    return fa < fb ? -1 : 1;
+  });
 
-function renderTablaPerio(tbodyId, rows) {
-  const tbody = document.getElementById(tbodyId);
+  const lastMonths = getImputacionMonths(4);
+  const tbody = document.getElementById('tbody-futuros');
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="10" class="empty-state">Sin reglas configuradas</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" class="empty-state"><div class="empty-state-icon">⏳</div>No hay futuros configurados</td></tr>';
     return;
   }
-  const lastMonths = getImputacionMonths(4); // Show last 4 months status
 
   tbody.innerHTML = rows.map(p => {
-    const imputStatus = lastMonths.map(ym => {
-      const imp = isImputado(p.id, ym);
-      const mov = imp ? MOVIMIENTOS.find(m => m.id === getImputacion(p.id, ym)?.movimiento_id) : null;
-      return imp
-        ? `<span title="${monthLabel(ym)}: imputado${mov ? ' — ' + fmtUSD(mov.monto) : ''}" style="color:var(--green);cursor:pointer" onclick="verImputacion('${p.id}','${ym}')">✓</span>`
-        : `<span title="${monthLabel(ym)}: pendiente" style="color:var(--gray-400)">○</span>`;
-    }).join(' ');
+    const esUnico = p.frecuencia === 'unico';
+    const freqBadge = esUnico
+      ? '<span class="badge badge-pendiente">único</span>'
+      : '<span class="badge badge-recurrente">' + (p.frecuencia||'mensual') + '</span>';
 
-    return `
-    <tr style="${p.activo ? '' : 'opacity:0.5'}">
-      <td>
-        <div style="font-size:13px;font-weight:500">${p.descripcion}</div>
-        ${p.notas ? '<div style="font-size:11px;color:var(--text-muted)">' + p.notas + '</div>' : ''}
-      </td>
-      <td>${p.categoria ? '<span class="badge badge-dev">' + p.categoria + '</span>' : '—'}</td>
-      <td><span class="badge badge-recurrente">${p.frecuencia || 'mensual'}</span></td>
-      <td style="font-family:var(--mono);font-size:12px">${(p.frecuencia==='semanal'||p.frecuencia==='quincenal') ? '—' : 'día ' + (p.dia || '—')}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">${fmtDate(p.desde)}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">${p.hasta ? fmtDate(p.hasta) : '∞'}</td>
-      <td>
-        ${p.producto ? '<span class="badge badge-' + (p.producto==='winix20'?'winix20':'build') + '">' + p.producto + '</span> ' : ''}
-        <span style="font-size:12px;color:var(--text-muted)">${p.cliente || ''}</span>
-      </td>
-      <td>
-        <div style="font-family:var(--mono);font-size:14px;letter-spacing:4px">${imputStatus}</div>
-        <div style="font-size:10px;color:var(--text-muted);font-family:var(--mono)">${lastMonths.map(m=>monthLabel(m)).join(' ')}</div>
-      </td>
-      <td>
-        <span class="badge ${p.activo ? 'badge-activo' : 'badge-inactivo'}" style="cursor:pointer" onclick="togglePeriodico('${p.id}')" title="Click para pausar/activar">
-          ${p.activo ? 'Activo' : 'Pausado'}
-        </span>
-      </td>
-      <td style="text-align:right" class="${p.tipo==='ingreso'?'amount-positive':'amount-negative'}">${fmtUSD(p.monto)}</td>
-      <td>
-        <div class="action-bar">
-          <button class="icon-btn" title="Editar" onclick="editarPeriodico('${p.id}')">✏</button>
-          <button class="icon-btn" title="Eliminar" onclick="deletePeriodico('${p.id}')">✕</button>
-        </div>
-      </td>
-    </tr>`;
+    const fechaCol = esUnico
+      ? '<span style="font-family:var(--mono);font-size:12px">' + fmtDate(p.fecha_unica) + '</span>'
+      : '<span style="font-family:var(--mono);font-size:12px">día ' + (p.dia||'—') + '</span>';
+
+    const desdeCol = esUnico ? '—' : fmtDate(p.desde);
+    const hastaCol = esUnico ? '—' : (p.hasta ? fmtDate(p.hasta) : '∞');
+
+    // Imputaciones: for únicos show single status, for periódicos show last 4 months
+    let impStatus = '';
+    if (esUnico) {
+      const periodo = p.fecha_unica ? p.fecha_unica.slice(0,7) : null;
+      if (periodo) {
+        const imp = isImputado(p.id, periodo);
+        impStatus = imp
+          ? '<span style="color:var(--green);cursor:pointer" title="Imputado — click para desimputar" onclick="verImputacion(\''+p.id+'\',\''+periodo+'\')">✓ Imputado</span>'
+          : '<span style="color:var(--gray-400)">○ Pendiente</span>';
+      }
+    } else {
+      impStatus = lastMonths.map(ym => {
+        const imp = isImputado(p.id, ym);
+        return imp
+          ? '<span title="' + monthLabel(ym) + ': imputado" style="color:var(--green);cursor:pointer" onclick="verImputacion(\''+p.id+'\',\''+ym+'\')">✓</span>'
+          : '<span title="' + monthLabel(ym) + ': pendiente" style="color:var(--gray-400)">○</span>';
+      }).join(' ');
+      impStatus += '<div style="font-size:10px;color:var(--text-muted);font-family:var(--mono)">' + lastMonths.map(m=>monthLabel(m)).join(' ') + '</div>';
+    }
+
+    return '<tr style="' + (p.activo ? '' : 'opacity:0.5') + '">' +
+      '<td><div style="font-size:13px;font-weight:500">' + p.descripcion + '</div>' +
+        (p.notas ? '<div style="font-size:11px;color:var(--text-muted)">' + p.notas + '</div>' : '') + '</td>' +
+      '<td>' + (p.categoria ? '<span class="badge badge-dev">' + p.categoria + '</span>' : '—') + '</td>' +
+      '<td>' + freqBadge + '</td>' +
+      '<td>' + fechaCol + '</td>' +
+      '<td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">' + desdeCol + '</td>' +
+      '<td style="font-family:var(--mono);font-size:11px;color:var(--text-muted)">' + hastaCol + '</td>' +
+      '<td>' + (p.producto ? '<span class="badge badge-' + (p.producto==='winix20'?'winix20':'build') + '">' + p.producto + '</span> ' : '') +
+        '<span style="font-size:12px;color:var(--text-muted)">' + (p.cliente||'') + '</span></td>' +
+      '<td>' + impStatus + '</td>' +
+      '<td><span class="badge ' + (p.activo ? 'badge-activo' : 'badge-inactivo') + '" style="cursor:pointer" onclick="toggleFuturo('' + p.id + '')">' + (p.activo ? 'Activo' : 'Pausado') + '</span></td>' +
+      '<td style="text-align:right" class="' + (p.tipo==='ingreso'?'amount-positive':'amount-negative') + '">' + fmtUSD(p.monto) + '</td>' +
+      '<td><div class="action-bar">' +
+        '<button class="icon-btn" title="Editar" onclick="editarFuturo('' + p.id + '')">✏</button>' +
+        '<button class="icon-btn" title="Eliminar" onclick="deleteFuturo('' + p.id + '')">✕</button>' +
+      '</div></td></tr>';
   }).join('');
 }
 
-function verImputacion(periodicoId, periodo) {
-  const imp = getImputacion(periodicoId, periodo);
-  const per = PERIODICOS.find(p => p.id === periodicoId);
-  const mov = imp && MOVIMIENTOS.find(m => m.id === imp.movimiento_id);
-  const info = mov
-    ? `Imputado con movimiento del ${fmtDate(mov.fecha)} — ${fmtUSD(mov.monto)}\n¿Desimputar?`
-    : `Imputado sin movimiento asociado.\n¿Desimputar?`;
-  if (confirm(info)) {
-    deleteImputacion(periodicoId, periodo).then(() => refreshAll());
-  }
+// =============================================
+// FUTUROS — MODAL
+// =============================================
+
+function openModalFuturo(tipo) {
+  document.getElementById('fEditId').value = '';
+  document.getElementById('modalFuturoTitle').textContent = tipo === 'ingreso' ? 'Nuevo Cobro Futuro' : 'Nuevo Pago Futuro';
+  if (tipo === 'ingreso') document.getElementById('fTipoIngreso').checked = true;
+  else document.getElementById('fTipoEgreso').checked = true;
+  updateFutCatOptions();
+  document.getElementById('fFutDesc').value = '';
+  document.getElementById('fFutMonto').value = '';
+  document.getElementById('fFutFrecuencia').value = 'unico';
+  document.getElementById('fFutFechaUnica').value = new Date().toISOString().slice(0,10);
+  document.getElementById('fFutDia').value = '5';
+  document.getElementById('fFutDesde').value = new Date().toISOString().slice(0,7) + '-01';
+  document.getElementById('fFutHasta').value = '';
+  document.getElementById('fFutProducto').value = '';
+  document.getElementById('fFutCliente').value = '';
+  document.getElementById('fFutNotas').value = '';
+  document.getElementById('fFutActivo').value = '1';
+  onFutFrecuenciaChange();
+  document.getElementById('modalFuturoOverlay').classList.add('open');
 }
 
-function openModalPeriodico(tipo) {
-  document.getElementById('pEditId').value = '';
-  document.getElementById('modalPeriodicoTitle').textContent = tipo === 'ingreso' ? 'Nuevo Cobro Periódico' : 'Nuevo Pago Periódico';
-  if (tipo === 'ingreso') document.getElementById('pTipoIngreso').checked = true;
-  else document.getElementById('pTipoEgreso').checked = true;
-  updatePCatOptions();
-  document.getElementById('pDesc').value = '';
-  document.getElementById('pMonto').value = '';
-  document.getElementById('pFrecuencia').value = 'mensual';
-  document.getElementById('pDia').value = '5';
-  document.getElementById('pDesde').value = new Date().toISOString().slice(0,7) + '-01';
-  document.getElementById('pHasta').value = '';
-  document.getElementById('pProducto').value = '';
-  document.getElementById('pCliente').value = '';
-  document.getElementById('pNotas').value = '';
-  document.getElementById('pActivo').value = '1';
-  onFrecuenciaChange();
-  document.getElementById('modalPeriodicoOverlay').classList.add('open');
-}
-
-function editarPeriodico(id) {
-  const p = PERIODICOS.find(x => x.id === id);
+function editarFuturo(id) {
+  const p = FUTUROS.find(x => x.id === id);
   if (!p) return;
-  openModalPeriodico(p.tipo);
-  document.getElementById('pEditId').value = p.id;
-  document.getElementById('modalPeriodicoTitle').textContent = 'Editar Regla Periódica';
-  if (p.tipo === 'ingreso') document.getElementById('pTipoIngreso').checked = true;
-  else document.getElementById('pTipoEgreso').checked = true;
-  updatePCatOptions();
-  document.getElementById('pDesc').value = p.descripcion || '';
-  document.getElementById('pCat').value = p.categoria || '';
-  document.getElementById('pMonto').value = p.monto || '';
-  document.getElementById('pFrecuencia').value = p.frecuencia || 'mensual';
-  document.getElementById('pDia').value = p.dia || '';
-  document.getElementById('pDesde').value = p.desde || '';
-  document.getElementById('pHasta').value = p.hasta || '';
-  document.getElementById('pProducto').value = p.producto || '';
-  document.getElementById('pCliente').value = p.cliente || '';
-  document.getElementById('pNotas').value = p.notas || '';
-  document.getElementById('pActivo').value = p.activo ? '1' : '0';
-  onFrecuenciaChange();
+  openModalFuturo(p.tipo);
+  document.getElementById('fEditId').value = p.id;
+  document.getElementById('modalFuturoTitle').textContent = 'Editar Futuro';
+  if (p.tipo === 'ingreso') document.getElementById('fTipoIngreso').checked = true;
+  else document.getElementById('fTipoEgreso').checked = true;
+  updateFutCatOptions();
+  document.getElementById('fFutDesc').value = p.descripcion || '';
+  document.getElementById('fFutCat').value = p.categoria || '';
+  document.getElementById('fFutMonto').value = p.monto || '';
+  document.getElementById('fFutFrecuencia').value = p.frecuencia || 'unico';
+  document.getElementById('fFutFechaUnica').value = p.fecha_unica || '';
+  document.getElementById('fFutDia').value = p.dia || '';
+  document.getElementById('fFutDesde').value = p.desde || '';
+  document.getElementById('fFutHasta').value = p.hasta || '';
+  document.getElementById('fFutProducto').value = p.producto || '';
+  document.getElementById('fFutCliente').value = p.cliente || '';
+  document.getElementById('fFutNotas').value = p.notas || '';
+  document.getElementById('fFutActivo').value = p.activo ? '1' : '0';
+  onFutFrecuenciaChange();
 }
 
-function closeModalPeriodico() {
-  document.getElementById('modalPeriodicoOverlay').classList.remove('open');
+function closeModalFuturo() {
+  document.getElementById('modalFuturoOverlay').classList.remove('open');
 }
 
-function onFrecuenciaChange() {
-  const freq = document.getElementById('pFrecuencia').value;
-  document.getElementById('pDiaGroup').style.display = (freq==='semanal'||freq==='quincenal') ? 'none' : 'block';
+function onFutFrecuenciaChange() {
+  const freq = document.getElementById('fFutFrecuencia').value;
+  const isUnico = freq === 'unico';
+  document.getElementById('fFutUnicoGroup').style.display = isUnico ? 'block' : 'none';
+  document.getElementById('fFutPeriodicoGroup').style.display = isUnico ? 'none' : 'block';
+  const noDay = freq === 'semanal' || freq === 'quincenal';
+  const diaInput = document.getElementById('fFutDia');
+  if (diaInput) diaInput.closest('.form-group').style.display = noDay ? 'none' : 'block';
+  const semNote = document.getElementById('fFutDiaSemanaGroup');
+  if (semNote) semNote.style.display = noDay ? 'block' : 'none';
 }
 
-function updatePCatOptions() {
-  const isEgreso = document.getElementById('pTipoEgreso').checked;
+function updateFutCatOptions() {
+  const isEgreso = document.getElementById('fTipoEgreso').checked;
   const cats = isEgreso ? CATEGORIAS_EGRESO : CATEGORIAS_INGRESO;
-  document.getElementById('pCat').innerHTML = '<option value="">— seleccioná —</option>' +
-    cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  document.getElementById('fFutCat').innerHTML = '<option value="">— seleccioná —</option>' +
+    cats.map(c => '<option value="' + c + '">' + c + '</option>').join('');
 }
 
-async function guardarPeriodico() {
-  const tipo = document.querySelector('input[name="pTipo"]:checked').value;
-  const desc = document.getElementById('pDesc').value.trim();
-  const cat = document.getElementById('pCat').value || null;
-  const monto = parseFloat(document.getElementById('pMonto').value);
-  const frecuencia = document.getElementById('pFrecuencia').value;
-  const dia = parseInt(document.getElementById('pDia').value) || 1;
-  const desde = document.getElementById('pDesde').value;
-  const hasta = document.getElementById('pHasta').value || null;
-  const producto = document.getElementById('pProducto').value || null;
-  const cliente = document.getElementById('pCliente').value.trim() || null;
-  const notas = document.getElementById('pNotas').value.trim() || null;
-  const activo = document.getElementById('pActivo').value === '1';
-  const editId = document.getElementById('pEditId').value;
+async function guardarFuturo() {
+  const tipo = document.querySelector('input[name="fTipo"]:checked').value;
+  const desc = document.getElementById('fFutDesc').value.trim();
+  const cat = document.getElementById('fFutCat').value || null;
+  const monto = parseFloat(document.getElementById('fFutMonto').value);
+  const frecuencia = document.getElementById('fFutFrecuencia').value;
+  const fecha_unica = frecuencia === 'unico' ? (document.getElementById('fFutFechaUnica').value || null) : null;
+  const dia = frecuencia !== 'unico' ? (parseInt(document.getElementById('fFutDia').value) || 1) : null;
+  const desde = frecuencia !== 'unico' ? (document.getElementById('fFutDesde').value || null) : null;
+  const hasta = frecuencia !== 'unico' ? (document.getElementById('fFutHasta').value || null) : null;
+  const producto = document.getElementById('fFutProducto').value || null;
+  const cliente = document.getElementById('fFutCliente').value.trim() || null;
+  const notas = document.getElementById('fFutNotas').value.trim() || null;
+  const activo = document.getElementById('fFutActivo').value === '1';
+  const editId = document.getElementById('fEditId').value;
 
-  if (!desc || !monto || !desde) { alert('Completá descripción, monto y fecha de inicio.'); return; }
+  if (!desc || !monto) { alert('Completá descripción y monto.'); return; }
+  if (frecuencia === 'unico' && !fecha_unica) { alert('Ingresá la fecha esperada.'); return; }
+  if (frecuencia !== 'unico' && !desde) { alert('Ingresá la fecha de inicio.'); return; }
   if (isNaN(monto) || monto <= 0) { alert('Monto inválido.'); return; }
 
-  const p = { tipo, descripcion:desc, categoria:cat, monto, frecuencia, dia, desde, hasta, producto, cliente, notas, activo };
+  const p = { tipo, descripcion:desc, categoria:cat, monto, frecuencia, fecha_unica, dia, desde, hasta, producto, cliente, notas, activo };
   if (editId) p.id = editId;
 
-  const ok = await savePeriodico(p);
-  if (ok) { closeModalPeriodico(); await refreshAll(); }
+  const ok = await saveFuturo(p);
+  if (ok) { closeModalFuturo(); await refreshAll(); }
 }
 
 // =============================================
@@ -2104,12 +2123,8 @@ function renderPnl() {
   // Expand periódicos into virtual movimientos for the PnL window
   const lastYM = months[months.length - 1];
   const firstYM = months[0];
-  const virtualPer = expandPeriodicos(firstYM, lastYM);
-
-  // Merge: real movimientos + manual proyectados + periódico-virtual
-  // Deduplicate: if a periodico occurrence is already in MOVIMIENTOS (marked realizado), don't double count
-  const realAndManual = MOVIMIENTOS;
-  const allMovs = [...realAndManual, ...virtualPer];
+  const virtualFut = expandFuturos(firstYM, lastYM);
+  const allMovs = [...MOVIMIENTOS, ...virtualFut];
 
   function sumCat(cat, tipo, mym) {
     return allMovs
@@ -2420,8 +2435,7 @@ function showPage(name) {
   if (name === 'caja') renderCaja();
   if (name === 'pnl') renderPnl();
   if (name === 'movimientos') renderMovimientos();
-  if (name === 'proyectados') renderProyectados();
-  if (name === 'periodicos') renderPeriodicos();
+  if (name === 'futuros') renderFuturos();
 }
 
 async function refreshAll() {
@@ -2440,6 +2454,7 @@ async function refreshAll() {
 const SQL = `-- Winix Admin Financiero — Schema
 -- Ejecutar en Supabase SQL Editor
 
+-- ① Tabla movimientos (sin cambios)
 create table if not exists movimientos (
   id uuid primary key default gen_random_uuid(),
   tipo text not null check (tipo in ('ingreso','egreso')),
@@ -2455,7 +2470,10 @@ create table if not exists movimientos (
   medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null),
   created_at timestamptz default now()
 );
+alter table movimientos add column if not exists
+  medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null);
 
+-- ② Tabla periódicos (legacy — se mantiene por compatibilidad)
 create table if not exists periodicos (
   id uuid primary key default gen_random_uuid(),
   tipo text not null check (tipo in ('ingreso','egreso')),
@@ -2468,51 +2486,95 @@ create table if not exists periodicos (
   desde date not null,
   hasta date,
   producto text check (producto in ('winix20','build','ambos') or producto is null),
-  cliente text,
-  notas text,
+  cliente text, notas text,
   activo boolean not null default true,
   created_at timestamptz default now()
 );
 
--- Agregar columna medio_pago si ya existe la tabla sin ella
-alter table movimientos add column if not exists
-  medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null);
-
-create table if not exists imputaciones (
+-- ③ Tabla futuros (unifica periódicos + únicos)
+create table if not exists futuros (
   id uuid primary key default gen_random_uuid(),
-  periodico_id uuid not null references periodicos(id) on delete cascade,
-  periodo text not null, -- formato YYYY-MM
-  movimiento_id uuid references movimientos(id) on delete set null,
-  medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null),
-  created_at timestamptz default now(),
-  unique(periodico_id, periodo)
+  tipo text not null check (tipo in ('ingreso','egreso')),
+  descripcion text not null,
+  categoria text,
+  monto numeric(12,2) not null check (monto >= 0),
+  frecuencia text not null default 'unico'
+    check (frecuencia in ('unico','mensual','bimestral','trimestral','semestral','anual','semanal','quincenal')),
+  -- Para únicos:
+  fecha_unica date,
+  -- Para periódicos:
+  dia integer check (dia between 1 and 31),
+  desde date,
+  hasta date,
+  producto text check (producto in ('winix20','build','ambos') or producto is null),
+  cliente text, notas text,
+  activo boolean not null default true,
+  created_at timestamptz default now()
 );
 
-create index if not exists idx_imp_periodico on imputaciones(periodico_id);
-create index if not exists idx_imp_periodo on imputaciones(periodo);
+-- ④ Migrar periódicos existentes a futuros (idempotente)
+insert into futuros (id, tipo, descripcion, categoria, monto, frecuencia,
+  dia, desde, hasta, producto, cliente, notas, activo, created_at)
+select id, tipo, descripcion, categoria, monto, frecuencia,
+  dia, desde, hasta, producto, cliente, notas, activo, created_at
+from periodicos
+where id not in (select id from futuros)
+on conflict (id) do nothing;
 
-alter table imputaciones disable row level security;
+-- ⑤ Migrar movimientos proyectados manuales a futuros como únicos
+insert into futuros (tipo, descripcion, categoria, monto, frecuencia,
+  fecha_unica, producto, cliente, notas, activo, created_at)
+select tipo, descripcion, categoria, monto, 'unico',
+  fecha, producto, cliente, notas, true, created_at
+from movimientos
+where estado = 'proyectado'
+  and id not in (
+    select movimiento_id from imputaciones where movimiento_id is not null
+  );
 
+-- ⑥ Tabla imputaciones (futuro_id reemplaza periodico_id)
+create table if not exists imputaciones (
+  id uuid primary key default gen_random_uuid(),
+  periodico_id uuid, -- legacy
+  futuro_id uuid references futuros(id) on delete cascade,
+  periodo text not null,
+  movimiento_id uuid references movimientos(id) on delete set null,
+  medio_pago text check (medio_pago in ('banco','efectivo') or medio_pago is null),
+  created_at timestamptz default now()
+);
+alter table imputaciones add column if not exists
+  futuro_id uuid references futuros(id) on delete cascade;
 
+-- Actualizar futuro_id en imputaciones existentes desde periodico_id
+update imputaciones set futuro_id = periodico_id
+where futuro_id is null and periodico_id is not null;
+
+-- Índices
+create index if not exists idx_mov_fecha on movimientos(fecha desc);
 create index if not exists idx_mov_tipo on movimientos(tipo);
 create index if not exists idx_mov_estado on movimientos(estado);
 create index if not exists idx_mov_medio on movimientos(medio_pago);
-create index if not exists idx_per_activo on periodicos(activo);
+create index if not exists idx_fut_activo on futuros(activo);
+create index if not exists idx_fut_tipo on futuros(tipo);
+create index if not exists idx_imp_futuro on imputaciones(futuro_id);
+create index if not exists idx_imp_periodo on imputaciones(periodo);
 
--- Deshabilitar RLS para uso personal sin auth
+-- Deshabilitar RLS (o habilitar con policy según tu config)
 alter table movimientos disable row level security;
 alter table periodicos disable row level security;
+alter table futuros disable row level security;
+alter table imputaciones disable row level security;
 
--- ============================================
--- USUARIOS: crear desde Supabase Dashboard
--- Authentication → Users → "Invite user"
--- Ingresá el email del socio y les llega
--- un mail para setear su contraseña.
--- ============================================
+-- Si ya tenés RLS habilitado con policies, ejecutá esto en su lugar:
+-- (comentar las 4 líneas de arriba y descomentar las de abajo)
+-- alter table futuros enable row level security;
+-- create policy "acceso autenticado futuros" on futuros for all to authenticated using (true) with check (true);
 
+-- Verificar
 select 'movimientos' as tabla, count(*) from movimientos
-union all
-select 'periodicos', count(*) from periodicos;`;
+union all select 'periodicos', count(*) from periodicos
+union all select 'futuros', count(*) from futuros
+union all select 'imputaciones', count(*) from imputaciones;`;
 
 function copySql() {
   navigator.clipboard.writeText(SQL).then(() => alert('SQL copiado al portapapeles'));
@@ -2545,8 +2607,12 @@ document.getElementById('modalPeriodicoOverlay').addEventListener('click', funct
   if (e.target === this) closeModalPeriodico();
 });
 
-document.getElementById('pTipoIngreso').addEventListener('change', updatePCatOptions);
-document.getElementById('pTipoEgreso').addEventListener('change', updatePCatOptions);
+document.getElementById('fTipoIngreso').addEventListener('change', updateFutCatOptions);
+document.getElementById('fTipoEgreso').addEventListener('change', updateFutCatOptions);
+
+document.getElementById('modalFuturoOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModalFuturo();
+});
 </script>
 </body>
 </html>
