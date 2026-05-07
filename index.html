@@ -1244,7 +1244,7 @@ const CATEGORIAS_INGRESO = [
   'Otros Ingresos'
 ];
 
-let CONFIG = { url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase'  };
+let CONFIG = { url: 'https://haopdbnqwyhltdxlfpfz.supabase.co', key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhb3BkYm5xd3lobHRkeGxmcGZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTA1NjEsImV4cCI6MjA5MzQ4NjU2MX0.Jbl-hnMfu4fJPGaxQv4kNj0mX2LvNBEcKaVCispRamI', mode: 'supabase' };
 let MOVIMIENTOS = [];
 let PERIODICOS = []; // legacy, migrated to FUTUROS
 let FUTUROS = [];
@@ -1784,11 +1784,11 @@ function renderFuturos() {
       '<td>' + (p.producto ? '<span class="badge badge-' + (p.producto==='winix20'?'winix20':'build') + '">' + p.producto + '</span> ' : '') +
         '<span style="font-size:12px;color:var(--text-muted)">' + (p.cliente||'') + '</span></td>' +
       '<td>' + impStatus + '</td>' +
-      '<td><span class="badge ' + (p.activo ? 'badge-activo' : 'badge-inactivo') + '" style="cursor:pointer" onclick="toggleFuturo('' + p.id + '')">' + (p.activo ? 'Activo' : 'Pausado') + '</span></td>' +
+      '<td><span class="badge ' + (p.activo ? 'badge-activo' : 'badge-inactivo') + '" style="cursor:pointer" onclick="toggleFuturo(\''+p.id+'\')">' + (p.activo ? 'Activo' : 'Pausado') + '</span></td>' +
       '<td style="text-align:right" class="' + (p.tipo==='ingreso'?'amount-positive':'amount-negative') + '">' + fmtUSD(p.monto) + '</td>' +
       '<td><div class="action-bar">' +
-        '<button class="icon-btn" title="Editar" onclick="editarFuturo('' + p.id + '')">✏</button>' +
-        '<button class="icon-btn" title="Eliminar" onclick="deleteFuturo('' + p.id + '')">✕</button>' +
+        '<button class="icon-btn" title="Editar" onclick="editarFuturo(\''+p.id+'\')">✏</button>' +
+        '<button class="icon-btn" title="Eliminar" onclick="deleteFuturo(\''+p.id+'\')">✕</button>' +
       '</div></td></tr>';
   }).join('');
 }
